@@ -3,6 +3,9 @@ import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../styles";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamsList } from "../types/navigation";
 
 /* Variables */
 
@@ -115,6 +118,9 @@ export default function OnboardScreen() {
 
   const { title, description } = screens[screen];
 
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamsList>>();
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
@@ -148,7 +154,7 @@ export default function OnboardScreen() {
           <View style={styles.getStartedContainer}>
             <TouchableOpacity
               style={styles.getStartedButton}
-              onPress={() => setScreen(0)}
+              onPress={() => navigation.navigate("AuthStack")}
             >
               <Text style={styles.getStartedTitle}>Get Started</Text>
             </TouchableOpacity>

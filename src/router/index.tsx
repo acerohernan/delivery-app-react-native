@@ -13,9 +13,9 @@ export default function RootStackComponent() {
   return (
     <NavigationContainer>
       <RootStack.Navigator screenOptions={{ headerShown: false }}>
-        <RootStack.Screen name="Home" component={HomeScreen} />
-        <RootStack.Screen name="AuthStack" component={AuthStackComponent} />
         <RootStack.Screen name="Onboard" component={OnboardScreen} />
+        <RootStack.Screen name="AuthStack" component={AuthStackComponent} />
+        <RootStack.Screen name="Home" component={HomeScreen} />
       </RootStack.Navigator>
     </NavigationContainer>
   );

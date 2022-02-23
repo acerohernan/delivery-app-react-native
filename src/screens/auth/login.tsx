@@ -149,6 +149,8 @@ export default function LoginScreen() {
 
   const navigation =
     useNavigation<NativeStackNavigationProp<AuthStackParamsList>>();
+  const navigationRoot =
+    useNavigation<NativeStackNavigationProp<RootStackParamsList>>();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -175,7 +177,10 @@ export default function LoginScreen() {
               </Text>
             </TouchableOpacity>
           </View>
-          <Button title="Sign In" onPress={() => console.log("Hi")} />
+          <Button
+            title="Sign In"
+            onPress={() => navigationRoot.navigate("Home")}
+          />
         </KeyboardAvoidingView>
         <View style={styles.goSignup}>
           <Text>Dont have an account? </Text>
