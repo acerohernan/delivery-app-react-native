@@ -12,6 +12,7 @@ import React from "react";
 import { colors } from "../../styles";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Material from "react-native-vector-icons/MaterialCommunityIcons";
+import { StatusBar } from "expo-status-bar";
 
 /* Components */
 
@@ -106,7 +107,7 @@ const RestaurantCard = () => {
       flexDirection: "row",
     },
     time: {
-      backgroundColor: "#fadec5",
+      backgroundColor: colors.orangeLight,
       padding: 7,
       borderRadius: 20,
       flexDirection: "row",
@@ -180,6 +181,7 @@ const Restaurants = () => {
 export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar style="auto" />
       <View style={styles.circle} />
       <View style={styles.addressContainer}>
         <TouchableOpacity style={styles.addressButton}>
