@@ -8,6 +8,8 @@ import AuthStackComponent from "./auth";
 import HomeScreen from "../screens/dashboard/home";
 import RestaurantScreen from "../screens/dashboard/restaurant";
 import MenuItemScreen from "../screens/dashboard/menuItem";
+import CartScreen from "../screens/dashboard/cart";
+import MethodScreen from "../screens/payment/method";
 
 const RootStack = createNativeStackNavigator<RootStackParamsList>();
 
@@ -15,7 +17,7 @@ export default function RootStackComponent() {
   return (
     <NavigationContainer>
       <RootStack.Navigator screenOptions={{ headerShown: false }}>
-        <RootStack.Screen name="Home" component={MenuItemScreen} />
+        <RootStack.Screen name="Home" component={CartScreen} />
         <RootStack.Screen name="Onboard" component={OnboardScreen} />
         <RootStack.Screen name="AuthStack" component={AuthStackComponent} />
       </RootStack.Navigator>

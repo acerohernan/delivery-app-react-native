@@ -5,15 +5,17 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
-  ScrollView,
 } from "react-native";
+import BouncyCheckbox from "react-native-bouncy-checkbox";
+import BouncyCheckboxGroup, {
+  ICheckboxButton,
+} from "react-native-bouncy-checkbox-group";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 
 import Material from "react-native-vector-icons/MaterialCommunityIcons";
 import { colors } from "../../styles";
-import { ScreenWidth } from "react-native-elements/dist/helpers";
 
 /* Variables */
 
@@ -22,7 +24,6 @@ const screenHeight = Dimensions.get("screen").height;
 /* Components */
 
 //NavLink
-
 interface NavLinkProps {
   active?: boolean;
   title: string;
@@ -60,8 +61,8 @@ const NavLink = ({ active, title }: NavLinkProps) => {
   );
 };
 
-//RestaurantNav
-const RestaurantNav = () => {
+//ItemNav
+const ItemNav = () => {
   const styles = StyleSheet.create({
     container: {
       borderColor: colors.gray,
@@ -78,8 +79,75 @@ const RestaurantNav = () => {
   return (
     <View style={styles.container}>
       <NavLink title="Details" />
-      <NavLink title="Burguer" />
-      <NavLink title="Review" active />
+      <NavLink title="Ingredients" active />
+      <NavLink title="Review" />
+    </View>
+  );
+};
+
+//ItemSection
+const ItemSection = () => {
+  const styles = StyleSheet.create({
+    container: {
+      paddingHorizontal: 20,
+      paddingVertical: 10,
+    },
+    header: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      marginBottom: 10,
+    },
+    title: {
+      fontWeight: "bold",
+      fontSize: 18,
+    },
+    required: {
+      padding: 10,
+      color: colors.orange,
+      backgroundColor: colors.orangeLight,
+      borderRadius: 10,
+      fontWeight: "bold",
+    },
+  });
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title}>Choise of top burguer</Text>
+        <Text style={styles.required}>Required</Text>
+      </View>
+      <View>
+        <View>
+          <BouncyCheckboxGroup
+            data={[
+              {
+                id: 0,
+                text: "Extra Savory Sauce",
+                style: {
+                  marginBottom: 5,
+                },
+              },
+              {
+                id: 1,
+                text: "Extra Cheese",
+                style: {
+                  marginBottom: 5,
+                },
+              },
+              {
+                id: 2,
+                text: "Extra Tomatoes",
+                style: {
+                  marginBottom: 5,
+                },
+              },
+            ]}
+            onChange={(e: ICheckboxButton) => console.log(e)}
+            style={{ flexDirection: "column" }}
+          />
+        </View>
+      </View>
     </View>
   );
 };
@@ -89,7 +157,15 @@ export default function MenuItemScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
-      <Image source={require("../../images/burger.jpg")} style={styles.image} />
+      <View>
+        <Image
+          source={require("../../images/burger.jpg")}
+          style={styles.image}
+        />
+        <TouchableOpacity style={styles.backButton}>
+          <Material name="chevron-left" size={38} color="white" />
+        </TouchableOpacity>
+      </View>
       <View style={styles.body}>
         <View style={styles.header}>
           <View style={styles.titleContainer}>
@@ -111,20 +187,17 @@ export default function MenuItemScreen() {
               <Material name="cash-multiple" color="green" size={25} />
               <Text style={styles.detailTitle}>Free Delivery</Text>
             </View>
-
-            {/* <Text style={styles.takeAway}>Required</Text> */}
           </View>
         </View>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <RestaurantNav />
-        </ScrollView>
+        <ItemNav />
+        <ItemSection />
       </View>
       <View style={styles.footer}>
         <View style={styles.quantityButton}>
           <TouchableOpacity>
             <Material
               name="minus-circle-outline"
-              size={25}
+              size={28}
               color={colors.orange}
             />
           </TouchableOpacity>
@@ -132,7 +205,7 @@ export default function MenuItemScreen() {
           <TouchableOpacity>
             <Material
               name="plus-circle-outline"
-              size={25}
+              size={28}
               color={colors.orange}
             />
           </TouchableOpacity>
@@ -153,6 +226,12 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 250,
     resizeMode: "cover",
+  },
+  backButton: {
+    padding: 20,
+
+    position: "absolute",
+    top: 0,
   },
   body: {
     height: screenHeight - 420,
@@ -207,13 +286,6 @@ const styles = StyleSheet.create({
     color: "gray",
   },
 
-  takeAway: {
-    padding: 10,
-    color: colors.orange,
-    backgroundColor: colors.orangeLight,
-    borderRadius: 10,
-    fontWeight: "bold",
-  },
   footer: {
     height: 100,
     flexDirection: "row",
