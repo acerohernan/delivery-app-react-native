@@ -213,33 +213,35 @@ const Ubication = () => {
 };
 
 //Main
-export default function CartScreen() {
+export default function CheckoutScreen() {
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="My Cart" />
+      <Header title="Checkout" />
       <View style={styles.body}>
         <ScrollView showsVerticalScrollIndicator={false}>
+          <Ubication />
           <Items />
-          <View style={styles.promo}>
+          <View style={styles.payment}>
+            <View style={styles.titleContainer}>
+              <Text style={styles.paymentTitle}>Payment Method</Text>
+              <TouchableOpacity>
+                <Text style={styles.buttonTextChange}>Change</Text>
+              </TouchableOpacity>
+            </View>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Image
-                source={require("../../images/coupon.png")}
-                style={styles.promoIcon}
+                source={require("../../images/card.png")}
+                style={styles.paymentIcon}
               />
-              <Text style={styles.promoText}>Add Promo Coden</Text>
+              <Text style={styles.paymentText}>Visa 4560 XXXX XXXX XXXX</Text>
             </View>
-            <TouchableOpacity>
-              <Material name="chevron-right" size={32} />
-            </TouchableOpacity>
           </View>
           <Subtotal />
-          <Ubication />
         </ScrollView>
       </View>
       <View style={styles.footer}>
         <TouchableOpacity style={styles.button}>
-          <Material name="cart-outline" color="white" size={25} />
-          <Text style={styles.buttonText}>Checkout</Text>
+          <Text style={styles.buttonText}>Confirm order</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -254,24 +256,38 @@ const styles = StyleSheet.create({
     height: screenHeight - 220,
     paddingHorizontal: 20,
   },
-  promo: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+  payment: {
+    flexDirection: "column",
     paddingVertical: 10,
     borderColor: "#eee",
     borderBottomWidth: 1,
     borderTopWidth: 1,
     marginTop: 10,
   },
-  promoIcon: {
+  titleContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  paymentTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  buttonTextChange: {
+    color: colors.orange,
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  paymentIcon: {
     width: 60,
     height: 40,
     resizeMode: "contain",
+    marginRight: 10,
   },
-  promoText: {
-    fontWeight: "bold",
-    fontSize: 16,
+  paymentText: {
+    color: "gray",
+    fontSize: 14,
   },
   footer: {
     height: 80,
