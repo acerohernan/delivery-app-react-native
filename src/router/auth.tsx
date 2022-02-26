@@ -15,6 +15,7 @@ export default function AuthStackComponent() {
       screenOptions={{
         headerShown: false,
       }}
+      initialRouteName="Login"
     >
       <AuthStack.Screen name="Login" component={LoginScreen} />
       <AuthStack.Screen

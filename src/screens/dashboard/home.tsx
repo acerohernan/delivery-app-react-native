@@ -13,6 +13,9 @@ import { colors } from "../../styles";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Material from "react-native-vector-icons/MaterialCommunityIcons";
 import { StatusBar } from "expo-status-bar";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { DashboardStackParamsList } from "../../types/navigation";
 
 /* Components */
 
@@ -70,6 +73,9 @@ const Categories = () => {
 
 //RestaurantCard
 const RestaurantCard = () => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<DashboardStackParamsList>>();
+
   const styles = StyleSheet.create({
     container: {
       width: "100%",
@@ -122,7 +128,11 @@ const RestaurantCard = () => {
   });
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      activeOpacity={0.7}
+      onPress={() => navigation.navigate("Restaurant")}
+    >
       <Image
         source={require("../../images/restaurant.jpg")}
         style={styles.image}
@@ -141,7 +151,7 @@ const RestaurantCard = () => {
           <Text style={styles.timeText}>20 min</Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

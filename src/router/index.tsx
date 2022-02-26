@@ -4,15 +4,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { RootStackParamsList } from "../types/navigation";
 import OnboardScreen from "../screens/onboard";
+
 import AuthStackComponent from "./auth";
-import HomeScreen from "../screens/dashboard/home";
-import RestaurantScreen from "../screens/dashboard/restaurant";
-import MenuItemScreen from "../screens/dashboard/menuItem";
-import CartScreen from "../screens/cart/cart";
-import MethodScreen from "../screens/payment/method";
-import CreditCardScreen from "../screens/payment/card";
-import CheckoutScreen from "../screens/cart/checkout";
-import OrderScreen from "../screens/cart/order";
+import DashboardStackComponent from "./dashboard";
 
 const RootStack = createNativeStackNavigator<RootStackParamsList>();
 
@@ -20,7 +14,10 @@ export default function RootStackComponent() {
   return (
     <NavigationContainer>
       <RootStack.Navigator screenOptions={{ headerShown: false }}>
-        <RootStack.Screen name="Home" component={OrderScreen} />
+        <RootStack.Screen
+          name="DashboardStack"
+          component={DashboardStackComponent}
+        />
         <RootStack.Screen name="Onboard" component={OnboardScreen} />
         <RootStack.Screen name="AuthStack" component={AuthStackComponent} />
       </RootStack.Navigator>

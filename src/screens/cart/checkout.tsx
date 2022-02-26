@@ -14,6 +14,9 @@ import { colors } from "../../styles";
 import Header from "../../components/header";
 import Modal from "react-native-modalbox";
 import ModalComponent from "../../components/modal";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { DashboardStackParamsList } from "../../types/navigation";
 
 /* Variables */
 const screenWidth = Dimensions.get("screen").width;
@@ -222,6 +225,14 @@ interface ModalProps {
 }
 
 const CheckoutModal = ({ isOpen, closeModal }: ModalProps) => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<DashboardStackParamsList>>();
+
+  const handleSeeOrderDetails = () => {
+    closeModal();
+    navigation.navigate("Order");
+  };
+
   const styles = StyleSheet.create({
     container: {
       height: 320,
@@ -265,8 +276,8 @@ const CheckoutModal = ({ isOpen, closeModal }: ModalProps) => {
         You placed the order successfully. You will get your your order within
         25 minutes. Thanks for usings our services. Enjoy your food.
       </Text>
-      <TouchableOpacity style={styles.button} onPress={closeModal}>
-        <Text style={styles.buttonText}>Keep Browsing Food</Text>
+      <TouchableOpacity style={styles.button} onPress={handleSeeOrderDetails}>
+        <Text style={styles.buttonText}>See order details</Text>
       </TouchableOpacity>
     </Modal>
   );

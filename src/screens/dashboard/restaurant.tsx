@@ -13,11 +13,14 @@ import { StatusBar } from "expo-status-bar";
 
 import Material from "react-native-vector-icons/MaterialCommunityIcons";
 import { colors } from "../../styles";
-import { ScreenWidth } from "react-native-elements/dist/helpers";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { DashboardStackParamsList } from "../../types/navigation";
 
 /* Variables */
 
 const screenHeight = Dimensions.get("screen").height;
+const screenWidth = Dimensions.get("screen").width;
 
 /* Components */
 
@@ -80,6 +83,9 @@ const RestaurantNav = () => {
 
 //MenuItem
 const MenuItem = () => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<DashboardStackParamsList>>();
+
   const styles = StyleSheet.create({
     container: {
       flexDirection: "row",
@@ -98,7 +104,7 @@ const MenuItem = () => {
       marginRight: 15,
     },
     details: {
-      width: ScreenWidth - 175,
+      width: screenWidth - 175,
     },
     title: {
       fontWeight: "bold",
@@ -129,7 +135,10 @@ const MenuItem = () => {
     },
   });
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => navigation.navigate("MenuItem")}
+    >
       <Image
         source={require("../../images/restaurant.jpg")}
         style={styles.image}
@@ -174,6 +183,9 @@ const Menu = () => {
 
 //Main
 export default function RestaurantScreen() {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<DashboardStackParamsList>>();
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
@@ -181,6 +193,12 @@ export default function RestaurantScreen() {
         source={require("../../images/restaurant.jpg")}
         style={styles.image}
       />
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation.goBack()}
+      >
+        <Material name="chevron-left" size={38} color="white" />
+      </TouchableOpacity>
       <View style={styles.body}>
         <View style={styles.header}>
           <Text style={styles.title}>Mcdonald'S</Text>
@@ -221,6 +239,12 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 250,
     resizeMode: "cover",
+  },
+  backButton: {
+    padding: 20,
+
+    position: "absolute",
+    top: 0,
   },
   body: {
     height: screenHeight - 300,

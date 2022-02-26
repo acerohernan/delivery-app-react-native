@@ -12,6 +12,9 @@ import Material from "react-native-vector-icons/MaterialCommunityIcons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../../styles";
 import Header from "../../components/header";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { DashboardStackParamsList } from "../../types/navigation";
 
 /* Variables */
 const screenWidth = Dimensions.get("screen").width;
@@ -214,6 +217,9 @@ const Ubication = () => {
 
 //Main
 export default function CartScreen() {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<DashboardStackParamsList>>();
+
   return (
     <SafeAreaView style={styles.container}>
       <Header title="My Cart" />
@@ -237,7 +243,10 @@ export default function CartScreen() {
         </ScrollView>
       </View>
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("Checkout")}
+        >
           <Material name="cart-outline" color="white" size={25} />
           <Text style={styles.buttonText}>Checkout</Text>
         </TouchableOpacity>

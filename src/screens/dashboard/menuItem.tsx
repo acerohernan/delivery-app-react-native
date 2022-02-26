@@ -17,9 +17,11 @@ import { StatusBar } from "expo-status-bar";
 
 import Material from "react-native-vector-icons/MaterialCommunityIcons";
 import { colors } from "../../styles";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { DashboardStackParamsList } from "../../types/navigation";
 
 /* Variables */
-
 const screenHeight = Dimensions.get("screen").height;
 
 /* Components */
@@ -155,6 +157,9 @@ const ItemSection = () => {
 
 //Main
 export default function MenuItemScreen() {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<DashboardStackParamsList>>();
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
@@ -163,7 +168,10 @@ export default function MenuItemScreen() {
           source={require("../../images/burger.jpg")}
           style={styles.image}
         />
-        <TouchableOpacity style={styles.backButton}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}
+        >
           <Material name="chevron-left" size={38} color="white" />
         </TouchableOpacity>
       </View>
@@ -211,7 +219,10 @@ export default function MenuItemScreen() {
             />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("Cart")}
+        >
           <Text style={styles.buttonText}>Add to Cart</Text>
         </TouchableOpacity>
       </View>
@@ -230,7 +241,6 @@ const styles = StyleSheet.create({
   },
   backButton: {
     padding: 20,
-
     position: "absolute",
     top: 0,
   },

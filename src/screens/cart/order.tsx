@@ -105,7 +105,7 @@ const Items = () => {
 //Subtotal
 const Subtotal = () => {
   const styles = StyleSheet.create({
-    container: {},
+    container: { paddingBottom: 20 },
     table: {
       paddingVertical: 10,
       borderBottomWidth: 1,
@@ -343,10 +343,9 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   body: {
-    height: screenHeight - 150,
+    height: screenHeight - 140,
     paddingHorizontal: 20,
     paddingTop: 10,
-    paddingBottom: 20,
   },
   itemContainer: {},
   itemTitleContainer: {
