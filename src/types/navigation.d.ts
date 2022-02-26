@@ -21,4 +21,5 @@ export type DashboardStackParamsList = {
   Order: undefined;
   PaymentMethod: undefined;
   CreditCardMethod: undefined;
+  Profile: undefined;
 };

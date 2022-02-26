@@ -2,7 +2,6 @@ import {
   View,
   Text,
   StyleSheet,
-  Dimensions,
   Image,
   TextInput,
   TouchableOpacity,
@@ -16,6 +15,7 @@ import { StatusBar } from "expo-status-bar";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { DashboardStackParamsList } from "../../types/navigation";
+import MainNav from "../../components/mainNav";
 
 /* Components */
 
@@ -82,11 +82,8 @@ const RestaurantCard = () => {
       padding: 10,
       borderRadius: 20,
       backgroundColor: "white",
-      borderColor: "rgba(198, 198, 207, 0.2)",
-      borderWidth: 1,
       marginBottom: 15,
     },
-
     image: {
       width: "100%",
       height: 180,
@@ -125,11 +122,20 @@ const RestaurantCard = () => {
       marginRight: 5,
       color: colors.orange,
     },
+    elevation: {
+      elevation: 1,
+    },
+    shadowProp: {
+      shadowColor: "#171717",
+      shadowOffset: { width: -2, height: 1 },
+      shadowOpacity: 0.2,
+      shadowRadius: 3,
+    },
   });
 
   return (
     <TouchableOpacity
-      style={styles.container}
+      style={[styles.container, styles.elevation, styles.shadowProp]}
       activeOpacity={0.7}
       onPress={() => navigation.navigate("Restaurant")}
     >
@@ -191,6 +197,7 @@ const Restaurants = () => {
 export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.container}>
+      <MainNav />
       <StatusBar style="auto" />
       <View style={styles.circle} />
       <View style={styles.addressContainer}>

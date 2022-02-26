@@ -9,6 +9,7 @@ import CheckoutScreen from "../screens/cart/checkout";
 import OrderScreen from "../screens/cart/order";
 import MethodScreen from "../screens/payment/method";
 import CreditCardScreen from "../screens/payment/card";
+import ProfileScreen from "../screens/dashboard/profile";
 
 const DashBoardStack = createNativeStackNavigator<DashboardStackParamsList>();
 
@@ -19,6 +20,7 @@ export default function DashboardStackComponent() {
       screenOptions={{ headerShown: false }}
     >
       <DashBoardStack.Screen name="Home" component={HomeScreen} />
+      <DashBoardStack.Screen name="Profile" component={ProfileScreen} />
       <DashBoardStack.Screen name="Restaurant" component={RestaurantScreen} />
       <DashBoardStack.Screen name="MenuItem" component={MenuItemScreen} />
       <DashBoardStack.Screen name="Cart" component={CartScreen} />

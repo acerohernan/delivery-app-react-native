@@ -59,7 +59,7 @@ const RestaurantNav = () => {
       paddingVertical: 20,
       paddingLeft: 25,
       marginLeft: 20,
-      marginTop: 15,
+      marginTop: 5,
       flexDirection: "row",
       alignItems: "center",
     },
@@ -92,9 +92,8 @@ const MenuItem = () => {
       alignItems: "center",
       padding: 15,
       borderRadius: 15,
-      borderColor: "rgba(198, 198, 207, 0.2)",
-      borderWidth: 1,
       marginBottom: 10,
+      backgroundColor: "white",
     },
     image: {
       width: 100,
@@ -133,10 +132,19 @@ const MenuItem = () => {
       justifyContent: "center",
       alignItems: "center",
     },
+    elevation: {
+      elevation: 1,
+    },
+    shadowProp: {
+      shadowColor: "#171717",
+      shadowOffset: { width: -2, height: 1 },
+      shadowOpacity: 0.2,
+      shadowRadius: 3,
+    },
   });
   return (
     <TouchableOpacity
-      style={styles.container}
+      style={[styles.container, styles.elevation, styles.shadowProp]}
       onPress={() => navigation.navigate("MenuItem")}
     >
       <Image
@@ -187,45 +195,47 @@ export default function RestaurantScreen() {
     useNavigation<NativeStackNavigationProp<DashboardStackParamsList>>();
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar style="auto" />
-      <Image
-        source={require("../../images/restaurant.jpg")}
-        style={styles.image}
-      />
-      <TouchableOpacity
-        style={styles.backButton}
-        onPress={() => navigation.goBack()}
-      >
-        <Material name="chevron-left" size={38} color="white" />
-      </TouchableOpacity>
-      <View style={styles.body}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Mcdonald'S</Text>
-          <Text style={styles.subtitle}>
-            $$ • Burger • American Food • Deshi Food
-          </Text>
-          <View style={styles.rating}>
-            <Material name="star" color="#fdda3a" size={25} />
-            <Text style={styles.ratingTitle}>4.9</Text>
-            <Text>200+ Ratings</Text>
-          </View>
-          <View style={styles.details}>
-            <View style={styles.detailItem}>
-              <Material name="cash-multiple" color="green" size={25} />
-              <Text style={styles.detailTitle}>Free Delivery</Text>
+    <SafeAreaView>
+      <View style={styles.container}>
+        <StatusBar style="auto" />
+        <Image
+          source={require("../../images/restaurant.jpg")}
+          style={styles.image}
+        />
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}
+        >
+          <Material name="chevron-left" size={38} color="white" />
+        </TouchableOpacity>
+        <View style={styles.body}>
+          <View style={styles.header}>
+            <Text style={styles.title}>Mcdonald'S</Text>
+            <Text style={styles.subtitle}>
+              $$ • Burger • American Food • Deshi Food
+            </Text>
+            <View style={styles.rating}>
+              <Material name="star" color="#fdda3a" size={25} />
+              <Text style={styles.ratingTitle}>4.9</Text>
+              <Text>200+ Ratings</Text>
             </View>
-            <View style={styles.detailItem}>
-              <Material name="clock-fast" color="#2E89BA" size={25} />
-              <Text style={styles.detailTitle}>30 min</Text>
+            <View style={styles.details}>
+              <View style={styles.detailItem}>
+                <Material name="cash-multiple" color="green" size={25} />
+                <Text style={styles.detailTitle}>Free Delivery</Text>
+              </View>
+              <View style={styles.detailItem}>
+                <Material name="clock-fast" color="#2E89BA" size={25} />
+                <Text style={styles.detailTitle}>30 min</Text>
+              </View>
+              <Text style={styles.takeAway}>Take Away</Text>
             </View>
-            <Text style={styles.takeAway}>Take Away</Text>
           </View>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <RestaurantNav />
+            <Menu />
+          </ScrollView>
         </View>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <RestaurantNav />
-          <Menu />
-        </ScrollView>
       </View>
     </SafeAreaView>
   );
@@ -242,7 +252,6 @@ const styles = StyleSheet.create({
   },
   backButton: {
     padding: 20,
-
     position: "absolute",
     top: 0,
   },
@@ -279,6 +288,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginTop: 7,
+    paddingBottom: 10,
   },
   detailItem: {
     flexDirection: "row",

@@ -23,7 +23,7 @@ export default function Header({ title }: Props) {
       </TouchableOpacity>
       <Text style={styles.title}>{title}</Text>
       <TouchableOpacity style={styles.headerButton}>
-        <Material name="bell-outline" size={30} />
+        <Material name="bell-outline" size={30} color="white" />
       </TouchableOpacity>
     </View>
   );
