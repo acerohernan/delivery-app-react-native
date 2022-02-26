@@ -1535,6 +1535,14 @@
   "resolved" "https://registry.npmjs.org/@types/prop-types/-/prop-types-15.7.4.tgz"
   "version" "15.7.4"
 
+"@types/react-native-modalbox@^1.4.10":
+  "integrity" "sha512-QFyObrYuwf7SiKgKASAUAAs+iJPIrbpacibuMZ/b3+cYx0m0CNBzi1rK04oM4QBAPSCwK3FhMEu6QT+ZboZHXQ=="
+  "resolved" "https://registry.npmjs.org/@types/react-native-modalbox/-/react-native-modalbox-1.4.10.tgz"
+  "version" "1.4.10"
+  dependencies:
+    "@types/react" "*"
+    "@types/react-native" "*"
+
 "@types/react-native-vector-icons@^6.4.10", "@types/react-native-vector-icons@^6.4.6":
   "integrity" "sha512-z4sexbuZ7nmYsp7Z9YB5fSQoN3KFn6nZA3QsCkQLOYnVmVlxX4U22v/bM9Xx/6dOA1vClxoRZo2CFDX16uryXQ=="
   "resolved" "https://registry.npmjs.org/@types/react-native-vector-icons/-/react-native-vector-icons-6.4.10.tgz"
@@ -4591,7 +4599,7 @@
     "kleur" "^3.0.3"
     "sisteransi" "^1.0.5"
 
-"prop-types@^15.5.8", "prop-types@^15.6.0", "prop-types@^15.7.2":
+"prop-types@^15.5.10", "prop-types@^15.5.8", "prop-types@^15.6.0", "prop-types@^15.7.2":
   "integrity" "sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg=="
   "resolved" "https://registry.npmjs.org/prop-types/-/prop-types-15.8.1.tgz"
   "version" "15.8.1"
@@ -4704,6 +4712,13 @@
   "version" "0.0.3"
   dependencies:
     "react-native-codegen" "*"
+
+"react-native-modalbox@^2.0.2":
+  "integrity" "sha512-uSuoZ+siPPNqWGyw8NXhA/Aots7mOx2+qijFoeovequY0kczZEPZDd0ARHbzg+1cE3H3AATJEwGdkVA8lUxs0g=="
+  "resolved" "https://registry.npmjs.org/react-native-modalbox/-/react-native-modalbox-2.0.2.tgz"
+  "version" "2.0.2"
+  dependencies:
+    "prop-types" "^15.5.10"
 
 "react-native-ratings@8.0.4":
   "integrity" "sha512-Xczu5lskIIRD6BEdz9A0jDRpEck/SFxRqiglkXi0u67yAtI1/pcJC76P4MukCbT8K4BPVl+42w83YqXBoBRl7A=="

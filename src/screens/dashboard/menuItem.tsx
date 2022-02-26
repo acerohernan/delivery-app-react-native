@@ -5,6 +5,7 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import BouncyCheckboxGroup, {
