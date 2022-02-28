@@ -15,6 +15,7 @@ import Header from "../../components/header";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { DashboardStackParamsList } from "../../types/navigation";
+import { StatusBar } from "expo-status-bar";
 
 /* Variables */
 const screenWidth = Dimensions.get("screen").width;
@@ -222,6 +223,7 @@ export default function CartScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar style="auto" />
       <Header title="My Cart" />
       <View style={styles.body}>
         <ScrollView showsVerticalScrollIndicator={false}>

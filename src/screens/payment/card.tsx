@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
 import Header from "../../components/header";
 import { colors } from "../../styles";
 
@@ -24,8 +25,8 @@ const screenHeight = Dimensions.get("screen").height;
 export default function CreditCardScreen() {
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar style="auto" />;
       <Header title="My Cards" />
-
       <View style={styles.body}>
         <ScrollView>
           <Image
@@ -73,7 +74,6 @@ export default function CreditCardScreen() {
           </View>
         </ScrollView>
       </View>
-
       <View style={styles.footer}>
         <TouchableOpacity style={styles.footerButton}>
           <Text style={styles.footerText}>Add Card</Text>

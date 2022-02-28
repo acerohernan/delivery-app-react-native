@@ -17,6 +17,7 @@ import ModalComponent from "../../components/modal";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { DashboardStackParamsList } from "../../types/navigation";
+import { StatusBar } from "expo-status-bar";
 
 /* Variables */
 const screenWidth = Dimensions.get("screen").width;
@@ -289,6 +290,7 @@ export default function CheckoutScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar style="auto" />;
       <CheckoutModal
         isOpen={modalIsOpen}
         closeModal={() => setModalIsOpen(false)}

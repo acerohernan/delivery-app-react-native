@@ -197,8 +197,8 @@ const Restaurants = () => {
 export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.container}>
-      <MainNav />
       <StatusBar style="auto" />
+      <MainNav />
       <View style={styles.circle} />
       <View style={styles.addressContainer}>
         <TouchableOpacity style={styles.addressButton}>

@@ -196,8 +196,8 @@ export default function RestaurantScreen() {
 
   return (
     <SafeAreaView>
+      <StatusBar style="auto" />
       <View style={styles.container}>
-        <StatusBar style="auto" />
         <Image
           source={require("../../images/restaurant.jpg")}
           style={styles.image}

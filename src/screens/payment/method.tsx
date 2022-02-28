@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
 import Header from "../../components/header";
 import { colors } from "../../styles";
 
@@ -20,6 +21,7 @@ const screenHeight = Dimensions.get("screen").height;
 export default function MethodScreen() {
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar style="auto" />;
       <Header title="Add a Payment Method" />
       <View style={styles.body}>
         <Text style={styles.title}>Choose payment method to add</Text>
