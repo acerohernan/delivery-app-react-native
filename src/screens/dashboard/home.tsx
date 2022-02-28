@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { colors } from "../../styles";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Material from "react-native-vector-icons/MaterialCommunityIcons";
@@ -16,6 +16,9 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { DashboardStackParamsList } from "../../types/navigation";
 import MainNav from "../../components/mainNav";
+
+import { useAppDispatch } from "../../redux";
+import { getRestaurants } from "../../redux/reducers/restaurant";
 
 /* Components */
 
@@ -195,6 +198,26 @@ const Restaurants = () => {
 
 //Main
 export default function HomeScreen() {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getRestaurants());
+  }, []);
+
+  /*   useEffect(() => {
+    const getData = async() => {
+
+      const url = "";
+      const options :{
+        headers: {
+          "Authorization": "Bearer "
+        }
+      }
+
+      const response = await fetch()
+    }
+  }) */
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />

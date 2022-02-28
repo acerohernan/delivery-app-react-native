@@ -1,14 +1,17 @@
 import React from "react";
 
 import { Provider } from "react-redux";
-import store from "./src/redux/store";
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "./src/redux";
 
 import RootStackComponent from "./src/router";
 
 export default function App() {
   return (
     <Provider store={store}>
-      <RootStackComponent />
+      <PersistGate loading={null} persistor={persistor}>
+        <RootStackComponent />
+      </PersistGate>
     </Provider>
   );
 }
