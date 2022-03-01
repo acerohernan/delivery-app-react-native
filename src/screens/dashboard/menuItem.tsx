@@ -17,6 +17,8 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { DashboardStackParamsList } from "../../types/navigation";
 import MenuItemNav from "../../components/menuItem/nav";
 import MenuItemSection from "../../components/menuItem/section";
+import { useAppDispatch, useAppSelector } from "../../redux";
+import { addItem, removeItem } from "../../redux/reducers/cart";
 
 /* Variables */
 const screenHeight = Dimensions.get("screen").height;
@@ -24,16 +26,28 @@ const screenHeight = Dimensions.get("screen").height;
 export default function MenuItemScreen() {
   const [section, setSection] = useState(1);
 
-  const handleChangeSection = (sectionNumber: number) => {
-    setSection(sectionNumber);
-  };
-
+  const dispatch = useAppDispatch();
   const navigation =
     useNavigation<NativeStackNavigationProp<DashboardStackParamsList>>();
 
   const { params } =
     useRoute<RouteProp<DashboardStackParamsList, "MenuItem">>();
   const { title, image, description, price } = params;
+  const { items } = useAppSelector((state) => state.cart);
+
+  const itemInCart = items.find((item) => item.title === title);
+
+  const handleChangeSection = (sectionNumber: number) => {
+    setSection(sectionNumber);
+  };
+
+  const handleAddToCart = () => {
+    dispatch(addItem({ title, image, description, price }));
+  };
+
+  const handleRemoveToCart = () => {
+    dispatch(removeItem({ title, image, description, price }));
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -77,29 +91,38 @@ export default function MenuItemScreen() {
         <MenuItemSection selectedSection={section} description={description} />
       </View>
       <View style={styles.footer}>
-        <View style={styles.quantityButton}>
-          <TouchableOpacity>
-            <Material
-              name="minus-circle-outline"
-              size={28}
-              color={colors.orange}
-            />
+        {itemInCart && (
+          <>
+            <View style={styles.quantityButton}>
+              <TouchableOpacity onPress={handleRemoveToCart}>
+                <Material
+                  name="minus-circle-outline"
+                  size={28}
+                  color={colors.orange}
+                />
+              </TouchableOpacity>
+              <Text style={styles.quantityNumber}>{itemInCart.quantity}</Text>
+              <TouchableOpacity onPress={handleAddToCart}>
+                <Material
+                  name="plus-circle-outline"
+                  size={28}
+                  color={colors.orange}
+                />
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigation.navigate("Cart")}
+            >
+              <Text style={styles.buttonText}>Go to Cart</Text>
+            </TouchableOpacity>
+          </>
+        )}
+        {!itemInCart && (
+          <TouchableOpacity style={styles.buttonFull} onPress={handleAddToCart}>
+            <Text style={styles.buttonText}>Add to Cart</Text>
           </TouchableOpacity>
-          <Text style={styles.quantityNumber}>2</Text>
-          <TouchableOpacity>
-            <Material
-              name="plus-circle-outline"
-              size={28}
-              color={colors.orange}
-            />
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate("Cart")}
-        >
-          <Text style={styles.buttonText}>Add to Cart</Text>
-        </TouchableOpacity>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -198,6 +221,12 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     marginLeft: 10,
+  },
+  buttonFull: {
+    width: "100%",
+    backgroundColor: colors.green,
+    padding: 15,
+    borderRadius: 10,
   },
   buttonText: {
     textAlign: "center",

@@ -19,7 +19,6 @@ export default function MenuItemSection({
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.title}>Details</Text>
-          <Text style={styles.required}>Required</Text>
         </View>
         <View>
           <Text style={styles.text}>{description}</Text>
@@ -33,7 +32,6 @@ export default function MenuItemSection({
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.title}>Review</Text>
-          <Text style={styles.required}>Required</Text>
         </View>
         <View>
           <Text style={styles.text}>
