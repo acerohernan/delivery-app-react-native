@@ -7,201 +7,41 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
-
 import Material from "react-native-vector-icons/MaterialCommunityIcons";
 import { colors } from "../../styles";
-import { useNavigation } from "@react-navigation/native";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { DashboardStackParamsList } from "../../types/navigation";
+import { useRestaurantCategories } from "../../utils/useRestaurantCat";
+import RestaurantNav from "../../components/restaurant/nav";
+import RestaurantMenu from "../../components/restaurant/menu";
 
 /* Variables */
-
 const screenHeight = Dimensions.get("screen").height;
-const screenWidth = Dimensions.get("screen").width;
 
-/* Components */
-
-//NavLink
-
-interface NavLinkProps {
-  active?: boolean;
-  title: string;
-}
-
-const NavLink = ({ active, title }: NavLinkProps) => {
-  const styles = StyleSheet.create({
-    container: {},
-    link: {
-      fontSize: 15,
-      fontWeight: active ? "bold" : "500",
-      color: active ? colors.black : "gray",
-      marginRight: 25,
-    },
-  });
-
-  return (
-    <TouchableOpacity>
-      <Text style={styles.link}>{title}</Text>
-    </TouchableOpacity>
-  );
-};
-
-//RestaurantNav
-const RestaurantNav = () => {
-  const styles = StyleSheet.create({
-    container: {
-      backgroundColor: colors.orangeLight,
-      borderTopLeftRadius: 30,
-      borderBottomLeftRadius: 30,
-      paddingVertical: 20,
-      paddingLeft: 25,
-      marginLeft: 20,
-      marginTop: 5,
-      flexDirection: "row",
-      alignItems: "center",
-    },
-  });
-
-  return (
-    <View style={styles.container}>
-      <ScrollView showsHorizontalScrollIndicator={false} horizontal>
-        <NavLink title="For You" active />
-        <NavLink title="Burguer" />
-        <NavLink title="Meels" />
-        <NavLink title="Chicken" />
-        <NavLink title="For You" />
-        <NavLink title="Burguer" />
-        <NavLink title="Meels" />
-        <NavLink title="Chicken" />
-      </ScrollView>
-    </View>
-  );
-};
-
-//MenuItem
-const MenuItem = () => {
-  const navigation =
-    useNavigation<NativeStackNavigationProp<DashboardStackParamsList>>();
-
-  const styles = StyleSheet.create({
-    container: {
-      flexDirection: "row",
-      alignItems: "center",
-      padding: 15,
-      borderRadius: 15,
-      marginBottom: 10,
-      backgroundColor: "white",
-    },
-    image: {
-      width: 100,
-      height: 100,
-      resizeMode: "cover",
-      borderRadius: 10,
-      marginRight: 15,
-    },
-    details: {
-      width: screenWidth - 175,
-    },
-    title: {
-      fontWeight: "bold",
-      fontSize: 22,
-      marginBottom: 5,
-    },
-    text: {
-      fontSize: 13,
-      color: "gray",
-    },
-    price: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      marginTop: 15,
-    },
-    priceText: {
-      fontSize: 16,
-      fontWeight: "bold",
-      color: colors.orange,
-    },
-    addButton: {
-      height: 22,
-      width: 22,
-      backgroundColor: colors.orange,
-      borderRadius: 50,
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    elevation: {
-      elevation: 1,
-    },
-    shadowProp: {
-      shadowColor: "#171717",
-      shadowOffset: { width: -2, height: 1 },
-      shadowOpacity: 0.2,
-      shadowRadius: 3,
-    },
-  });
-  return (
-    <TouchableOpacity
-      style={[styles.container, styles.elevation, styles.shadowProp]}
-      onPress={() => navigation.navigate("MenuItem")}
-    >
-      <Image
-        source={require("../../images/restaurant.jpg")}
-        style={styles.image}
-      />
-      <View style={styles.details}>
-        <Text style={styles.title}>Chicken Burguer</Text>
-        <Text style={styles.text}>Sandwich features two savory</Text>
-        <Text style={styles.text}>Flame-grilled beef patties</Text>
-        <View style={styles.price}>
-          <Text style={styles.priceText}>$15.00</Text>
-          <TouchableOpacity style={styles.addButton}>
-            <Material name="plus" size={18} color="white" />
-          </TouchableOpacity>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
-};
-
-//Menu
-const Menu = () => {
-  const styles = StyleSheet.create({
-    container: {
-      paddingHorizontal: 15,
-      marginTop: 10,
-    },
-  });
-
-  return (
-    <View style={styles.container}>
-      <MenuItem />
-      <MenuItem />
-      <MenuItem />
-      <MenuItem />
-      <MenuItem />
-      <MenuItem />
-      <MenuItem />
-      <MenuItem />
-    </View>
-  );
-};
-
-//Main
 export default function RestaurantScreen() {
+  const [menuCategory, setMenuCategory] = useState("For You");
+
   const navigation =
     useNavigation<NativeStackNavigationProp<DashboardStackParamsList>>();
+
+  const { params } =
+    useRoute<RouteProp<DashboardStackParamsList, "Restaurant">>();
+  const { name, image_url, categories, price, review_count, rating } = params;
+  const parsedCategories = useRestaurantCategories(categories);
+
+  const handleChangeMenuCategory = (category: string) => {
+    setMenuCategory(category);
+  };
 
   return (
     <SafeAreaView>
       <StatusBar style="auto" />
       <View style={styles.container}>
-        <Image
-          source={require("../../images/restaurant.jpg")}
-          style={styles.image}
-        />
+        <Image source={{ uri: image_url }} style={styles.image} />
         <TouchableOpacity
           style={styles.backButton}
           onPress={() => navigation.goBack()}
@@ -210,14 +50,14 @@ export default function RestaurantScreen() {
         </TouchableOpacity>
         <View style={styles.body}>
           <View style={styles.header}>
-            <Text style={styles.title}>Mcdonald'S</Text>
+            <Text style={styles.title}>{name}</Text>
             <Text style={styles.subtitle}>
-              $$ • Burger • American Food • Deshi Food
+              {price} • {parsedCategories}
             </Text>
             <View style={styles.rating}>
               <Material name="star" color="#fdda3a" size={25} />
-              <Text style={styles.ratingTitle}>4.9</Text>
-              <Text>200+ Ratings</Text>
+              <Text style={styles.ratingTitle}>{rating}</Text>
+              <Text>{review_count}+ Ratings</Text>
             </View>
             <View style={styles.details}>
               <View style={styles.detailItem}>
@@ -232,8 +72,11 @@ export default function RestaurantScreen() {
             </View>
           </View>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <RestaurantNav />
-            <Menu />
+            <RestaurantNav
+              changeCategory={handleChangeMenuCategory}
+              selectedCategory={menuCategory}
+            />
+            <RestaurantMenu selectedCategory={menuCategory} />
           </ScrollView>
         </View>
       </View>

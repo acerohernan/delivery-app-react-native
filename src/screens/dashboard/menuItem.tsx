@@ -5,169 +5,41 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
-  Alert,
 } from "react-native";
-import BouncyCheckbox from "react-native-bouncy-checkbox";
-import BouncyCheckboxGroup, {
-  ICheckboxButton,
-} from "react-native-bouncy-checkbox-group";
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 
 import Material from "react-native-vector-icons/MaterialCommunityIcons";
 import { colors } from "../../styles";
-import { useNavigation } from "@react-navigation/native";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { DashboardStackParamsList } from "../../types/navigation";
+import MenuItemNav from "../../components/menuItem/nav";
+import MenuItemSection from "../../components/menuItem/section";
 
 /* Variables */
 const screenHeight = Dimensions.get("screen").height;
 
-/* Components */
-
-//NavLink
-interface NavLinkProps {
-  active?: boolean;
-  title: string;
-}
-
-const NavLink = ({ active, title }: NavLinkProps) => {
-  const styles = StyleSheet.create({
-    container: {
-      flexDirection: "column",
-      justifyContent: "center",
-      alignContent: "center",
-    },
-    link: {
-      fontSize: 15,
-      fontWeight: active ? "bold" : "500",
-      color: active ? colors.black : "gray",
-    },
-
-    point: {
-      position: "absolute",
-      left: "50%",
-      bottom: -10,
-      width: 7,
-      height: 7,
-      backgroundColor: "black",
-      borderRadius: 10,
-    },
-  });
-
-  return (
-    <TouchableOpacity style={styles.container}>
-      <Text style={styles.link}>{title}</Text>
-      {active ? <View style={styles.point} /> : null}
-    </TouchableOpacity>
-  );
-};
-
-//ItemNav
-const ItemNav = () => {
-  const styles = StyleSheet.create({
-    container: {
-      borderColor: colors.gray,
-      borderBottomWidth: 1,
-      borderTopWidth: 1,
-      paddingVertical: 15,
-      marginTop: 15,
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-evenly",
-    },
-  });
-
-  return (
-    <View style={styles.container}>
-      <NavLink title="Details" />
-      <NavLink title="Ingredients" active />
-      <NavLink title="Review" />
-    </View>
-  );
-};
-
-//ItemSection
-const ItemSection = () => {
-  const styles = StyleSheet.create({
-    container: {
-      paddingHorizontal: 20,
-      paddingVertical: 10,
-    },
-    header: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-      marginBottom: 10,
-    },
-    title: {
-      fontWeight: "bold",
-      fontSize: 18,
-    },
-    required: {
-      padding: 10,
-      color: colors.orange,
-      backgroundColor: colors.orangeLight,
-      borderRadius: 10,
-      fontWeight: "bold",
-    },
-  });
-
-  return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Choise of top burguer</Text>
-        <Text style={styles.required}>Required</Text>
-      </View>
-      <View>
-        <View>
-          <BouncyCheckboxGroup
-            data={[
-              {
-                id: 0,
-                text: "Extra Savory Sauce",
-                style: {
-                  marginBottom: 5,
-                },
-              },
-              {
-                id: 1,
-                text: "Extra Cheese",
-                style: {
-                  marginBottom: 5,
-                },
-              },
-              {
-                id: 2,
-                text: "Extra Tomatoes",
-                style: {
-                  marginBottom: 5,
-                },
-              },
-            ]}
-            onChange={(e: ICheckboxButton) => console.log(e)}
-            style={{ flexDirection: "column" }}
-          />
-        </View>
-      </View>
-    </View>
-  );
-};
-
-//Main
 export default function MenuItemScreen() {
+  const [section, setSection] = useState(1);
+
+  const handleChangeSection = (sectionNumber: number) => {
+    setSection(sectionNumber);
+  };
+
   const navigation =
     useNavigation<NativeStackNavigationProp<DashboardStackParamsList>>();
+
+  const { params } =
+    useRoute<RouteProp<DashboardStackParamsList, "MenuItem">>();
+  const { title, image, description, price } = params;
 
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
       <View>
-        <Image
-          source={require("../../images/burger.jpg")}
-          style={styles.image}
-        />
+        <Image source={{ uri: image }} style={styles.image} />
         <TouchableOpacity
           style={styles.backButton}
           onPress={() => navigation.goBack()}
@@ -178,8 +50,8 @@ export default function MenuItemScreen() {
       <View style={styles.body}>
         <View style={styles.header}>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>Chicken Burguer</Text>
-            <Text style={styles.price}>$15.00</Text>
+            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.price}>{price}</Text>
           </View>
 
           <View style={styles.details}>
@@ -198,8 +70,11 @@ export default function MenuItemScreen() {
             </View>
           </View>
         </View>
-        <ItemNav />
-        <ItemSection />
+        <MenuItemNav
+          changeSection={handleChangeSection}
+          selectedSection={section}
+        />
+        <MenuItemSection selectedSection={section} description={description} />
       </View>
       <View style={styles.footer}>
         <View style={styles.quantityButton}>

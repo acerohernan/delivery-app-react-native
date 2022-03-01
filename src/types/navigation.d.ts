@@ -1,4 +1,5 @@
 import { NavigationScreenParams } from "@react-navigation/native";
+import { IRestaurant } from "../redux/models";
 
 export type RootStackParamsList = {
   Onboard: undefined;
@@ -14,8 +15,21 @@ export type AuthStackParamsList = {
 
 export type DashboardStackParamsList = {
   Home: undefined;
-  Restaurant: undefined;
-  MenuItem: undefined;
+  Restaurant: {
+    name: string;
+    image_url: string;
+    is_closed: boolean;
+    review_count: number;
+    categories: Array<IRestaurantCategory>;
+    rating: number;
+    price: string;
+  };
+  MenuItem: {
+    title: string;
+    description: string;
+    price: string;
+    image: string;
+  };
   Cart: undefined;
   Checkout: undefined;
   Order: undefined;
