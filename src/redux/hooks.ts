@@ -1,5 +1,4 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import { AsyncThunkAction } from "@reduxjs/toolkit";
 
 import type { RootState, AppDispatch } from "./store";
 

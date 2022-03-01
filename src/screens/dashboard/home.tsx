@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { colors } from "../../styles";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Material from "react-native-vector-icons/MaterialCommunityIcons";
@@ -17,17 +17,73 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { DashboardStackParamsList } from "../../types/navigation";
 import MainNav from "../../components/mainNav";
 
-import { useAppDispatch } from "../../redux";
+import { useAppDispatch, useAppSelector } from "../../redux";
 import { getRestaurants } from "../../redux/reducers/restaurant";
+import { IRestaurant } from "../../redux/models";
+import { useRestaurantCategories } from "../../utils/useRestaurantCat";
+
+/* Variables */
+const categories = [
+  {
+    name: "American",
+    key_name: "American (New)",
+    image_src: require("../../images/categories/american.png"),
+  },
+  {
+    name: "Pizza",
+    key_name: "Pizza",
+    image_src: require("../../images/categories/pizza.png"),
+  },
+  {
+    name: "Korean",
+    key_name: "Korean",
+    image_src: require("../../images/categories/korean.png"),
+  },
+  {
+    name: "French",
+    key_name: "French",
+    image_src: require("../../images/categories/frech.png"),
+  },
+  {
+    name: "Latin",
+    key_name: "Latin American",
+    image_src: require("../../images/categories/latin.png"),
+  },
+  {
+    name: "Small",
+    key_name: "Tapas/Small Plates",
+    image_src: require("../../images/categories/tapas.png"),
+  },
+  {
+    name: "Gastropubs",
+    key_name: "Gastropubs",
+    image_src: require("../../images/categories/gastropubs.png"),
+  },
+  {
+    name: "Wine",
+    key_name: "Wine Bars",
+    image_src: require("../../images/categories/wine.png"),
+  },
+];
 
 /* Components */
 
 //Category
 interface CategoryProps {
-  title: string;
+  name: string;
+  key_name: string;
+  image_src: any;
+  changeCategory: any;
+  active?: boolean;
 }
 
-const Category = ({ title }: CategoryProps) => {
+const Category = ({
+  name,
+  key_name,
+  image_src,
+  changeCategory,
+  active,
+}: CategoryProps) => {
   const styles = StyleSheet.create({
     container: {
       width: 80,
@@ -35,22 +91,37 @@ const Category = ({ title }: CategoryProps) => {
     title: {
       color: "white",
       textAlign: "center",
+      fontWeight: active ? "bold" : "500",
+      borderColor: "white",
+      borderBottomWidth: active ? 2 : 0,
     },
     icon: {
       alignSelf: "center",
+      width: 40,
+      height: 40,
+      resizeMode: "contain",
     },
   });
 
   return (
-    <TouchableOpacity style={styles.container}>
-      <Material name="food" size={40} color="white" style={styles.icon} />
-      <Text style={styles.title}>{title}</Text>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => changeCategory(key_name)}
+    >
+      <Image source={image_src} style={styles.icon} />
+      <Text style={styles.title}>{name}</Text>
     </TouchableOpacity>
   );
 };
 
 //Categories
-const Categories = () => {
+
+interface CategoriesProps {
+  changeCategory: (category: string) => void;
+  categorySelected: string;
+}
+
+const Categories = ({ changeCategory, categorySelected }: CategoriesProps) => {
   const styles = StyleSheet.create({
     container: {
       flexDirection: "row",
@@ -62,22 +133,38 @@ const Categories = () => {
   return (
     <View style={styles.container}>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        <Category title="Breackfast" />
-        <Category title="Burguer" />
-        <Category title="Pizza" />
-        <Category title="Coffee" />
-        <Category title="Pizza" />
-        <Category title="Burguer" />
-        <Category title="Pizza" />
+        {categories.map((category, i) => {
+          if (category.key_name === categorySelected) {
+            return (
+              <Category
+                key={i}
+                changeCategory={changeCategory}
+                {...category}
+                active
+              />
+            );
+          }
+          return (
+            <Category key={i} changeCategory={changeCategory} {...category} />
+          );
+        })}
       </ScrollView>
     </View>
   );
 };
 
 //RestaurantCard
-const RestaurantCard = () => {
+const RestaurantCard = ({
+  name,
+  image_url,
+  categories,
+  review_count,
+  rating,
+}: IRestaurant) => {
   const navigation =
     useNavigation<NativeStackNavigationProp<DashboardStackParamsList>>();
+
+  const parsedCategories = useRestaurantCategories(categories);
 
   const styles = StyleSheet.create({
     container: {
@@ -142,18 +229,15 @@ const RestaurantCard = () => {
       activeOpacity={0.7}
       onPress={() => navigation.navigate("Restaurant")}
     >
-      <Image
-        source={require("../../images/restaurant.jpg")}
-        style={styles.image}
-      />
-      <Text style={styles.title}>Burguer King</Text>
-      <Text style={styles.categories}>
-        Burguer • American Food • Deshi Food
-      </Text>
+      <Image source={{ uri: image_url }} style={styles.image} />
+      <Text style={styles.title}>{name}</Text>
+      <Text style={styles.categories}>{parsedCategories}</Text>
       <View style={styles.footer}>
         <View style={styles.rating}>
           <Material name="star" size={20} color="#fdda3a" />
-          <Text style={styles.rating}>4.9 (150)</Text>
+          <Text style={styles.rating}>
+            {rating} ({review_count})
+          </Text>
         </View>
         <View style={styles.time}>
           <Material name="clock-outline" size={15} style={styles.timeIcon} />
@@ -165,7 +249,11 @@ const RestaurantCard = () => {
 };
 
 //Restaurants
-const Restaurants = () => {
+interface RestaurantsProps {
+  items: Array<IRestaurant>;
+}
+
+const Restaurants = ({ items }: RestaurantsProps) => {
   const styles = StyleSheet.create({
     container: {
       marginTop: 50,
@@ -181,16 +269,8 @@ const Restaurants = () => {
     <View style={styles.container}>
       <Text style={styles.sectionTitle}>Restaurants</Text>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <RestaurantCard />
-        <RestaurantCard />
-        <RestaurantCard />
-        <RestaurantCard />
-        <RestaurantCard />
-        <RestaurantCard />
-        <RestaurantCard />
-        <RestaurantCard />
-        <RestaurantCard />
-        <RestaurantCard />
+        {items &&
+          items.map((item) => <RestaurantCard key={item.id} {...item} />)}
       </ScrollView>
     </View>
   );
@@ -198,25 +278,31 @@ const Restaurants = () => {
 
 //Main
 export default function HomeScreen() {
+  const [category, setCategory] = useState("");
+  const [itemsByCategory, setItemsByCategory] = useState<Array<IRestaurant>>(
+    []
+  );
+
+  const { items } = useAppSelector((state) => state.restaurant);
   const dispatch = useAppDispatch();
+
+  const handleChangeCategory = (categoryName: string) => {
+    if (category === categoryName) return setCategory("");
+    setCategory(categoryName);
+  };
 
   useEffect(() => {
     dispatch(getRestaurants());
   }, []);
 
-  /*   useEffect(() => {
-    const getData = async() => {
-
-      const url = "";
-      const options :{
-        headers: {
-          "Authorization": "Bearer "
-        }
-      }
-
-      const response = await fetch()
+  useEffect(() => {
+    if (items.length > 1 && category !== "") {
+      const filteredItems = items.filter((item) =>
+        useRestaurantCategories(item.categories).includes(category)
+      );
+      setItemsByCategory(filteredItems);
     }
-  }) */
+  }, [category, items]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -242,8 +328,11 @@ export default function HomeScreen() {
           style={styles.inputIcon}
         />
       </View>
-      <Categories />
-      <Restaurants />
+      <Categories
+        changeCategory={handleChangeCategory}
+        categorySelected={category}
+      />
+      <Restaurants items={category ? itemsByCategory : items} />
     </SafeAreaView>
   );
 }
