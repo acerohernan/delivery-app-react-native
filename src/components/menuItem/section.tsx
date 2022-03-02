@@ -54,7 +54,7 @@ export default function MenuItemSection({
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Choise your extra</Text>
-        <Text style={styles.required}>Required</Text>
+        <Text style={styles.required}>Optional</Text>
       </View>
       <View>
         <View>
@@ -82,7 +82,7 @@ export default function MenuItemSection({
                 },
               },
             ]}
-            onChange={(e: ICheckboxButton) => console.log(e)}
+            onChange={(e: ICheckboxButton) => true}
             style={{ flexDirection: "column" }}
           />
         </View>

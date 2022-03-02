@@ -5,6 +5,7 @@ export interface CartState {
   orderItems: Array<IMenuItem>;
   orderRestaurant: string;
   paymentMethod: "" | "paypal" | "card";
+  promo_code_discount: number;
 }
 
 export interface IMenuItem {

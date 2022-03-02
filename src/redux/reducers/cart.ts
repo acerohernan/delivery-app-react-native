@@ -8,6 +8,7 @@ const initialState: CartState = {
   orderItems: [],
   orderRestaurant: "",
   paymentMethod: "",
+  promo_code_discount: 0,
 };
 
 /* Reducers */
@@ -67,6 +68,10 @@ const createOrderReducer = (state: CartState) => {
   state.restaurant = "";
 };
 
+const applyDiscountReducer = (state: CartState) => {
+  state.promo_code_discount = 5;
+};
+
 const cartSlice = createSlice({
   name: "cart",
   initialState,
@@ -75,6 +80,7 @@ const cartSlice = createSlice({
     removeItem: removeItemReducer,
     createOrder: createOrderReducer,
     changePaymentMethod: changePaymentMethodReducer,
+    applyDiscount: applyDiscountReducer,
   },
 });
 
@@ -82,6 +88,11 @@ interface PaymentAction {
   payload: "paypal" | "card";
 }
 
-export const { addItem, removeItem, changePaymentMethod, createOrder } =
-  cartSlice.actions;
+export const {
+  addItem,
+  removeItem,
+  changePaymentMethod,
+  createOrder,
+  applyDiscount,
+} = cartSlice.actions;
 export default cartSlice.reducer;

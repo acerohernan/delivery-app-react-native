@@ -14,6 +14,59 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { DashboardStackParamsList } from "../../types/navigation";
 import { useRestaurantCategories } from "../../utils/useRestaurantCat";
 import { colors } from "../../styles";
+import { useAppSelector } from "../../redux";
+
+//RestaurantPlaceholder
+export const RestaurantPlaceholder = () => {
+  const styles = StyleSheet.create({
+    container: {
+      width: "100%",
+      padding: 10,
+      borderRadius: 20,
+      backgroundColor: "white",
+      marginBottom: 15,
+      elevation: 1,
+    },
+    image: {
+      width: "100%",
+      height: 180,
+      borderRadius: 20,
+      backgroundColor: colors.gray,
+    },
+    text: {
+      backgroundColor: colors.gray,
+      width: "100%",
+      height: 15,
+      marginTop: 10,
+      borderRadius: 20,
+    },
+
+    table: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      marginTop: 10,
+    },
+    tableLabel: {
+      width: 50,
+      height: 15,
+      backgroundColor: colors.gray,
+      borderRadius: 20,
+    },
+  });
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.image} />
+      <View style={styles.text} />
+      <View style={styles.text} />
+      <View style={styles.table}>
+        <View style={styles.tableLabel} />
+        <View style={styles.tableLabel} />
+      </View>
+    </View>
+  );
+};
 
 //RestaurantCard
 const RestaurantCard = ({
@@ -122,12 +175,27 @@ const RestaurantCard = ({
   );
 };
 
-//Restaurants
-interface RestaurantsProps {
+//Main
+
+interface RestaurantProps {
   items: Array<IRestaurant>;
 }
 
-export default function Restaurants({ items }: RestaurantsProps) {
+export default function Restaurants({ items }: RestaurantProps) {
+  const { status } = useAppSelector((state) => state.restaurant);
+
+  if (status !== "getRestaurants_success") {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.sectionTitle}>Restaurants</Text>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {[1, 2, 3, 4, 5, 6].map((e) => (
+            <RestaurantPlaceholder key={e} />
+          ))}
+        </ScrollView>
+      </View>
+    );
+  }
   return (
     <View style={styles.container}>
       <Text style={styles.sectionTitle}>Restaurants</Text>

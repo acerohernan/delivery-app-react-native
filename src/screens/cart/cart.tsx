@@ -8,7 +8,7 @@ import {
   ScrollView,
   Alert,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import Material from "react-native-vector-icons/MaterialCommunityIcons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../../styles";
@@ -20,18 +20,24 @@ import Header from "../../components/header";
 import CartItems from "../../components/cart/items";
 import CartSubtotal from "../../components/cart/subtotal";
 import CartUbication from "../../components/cart/ubication";
-import { useAppSelector } from "../../redux";
+import { useAppDispatch, useAppSelector } from "../../redux";
 import MainNav from "../../components/mainNav";
+import Modal from "../../components/modal";
+import Input from "../../components/input";
+import { applyDiscount } from "../../redux/reducers/cart";
+import CartPromoModal from "../../components/cart/promoModal";
 
 /* Variables */
 const screenHeight = Dimensions.get("screen").height;
 
 export default function CartScreen() {
+  const [openPromoModal, setOpenModalOpen] = useState(false);
+
   const navigation =
     useNavigation<NativeStackNavigationProp<DashboardStackParamsList>>();
 
   const { items } = useAppSelector((state) => state.cart);
-  const { items: addressItems } = useAppSelector((STATE) => STATE.address);
+  const { items: addressItems } = useAppSelector((state) => state.address);
 
   const handleGoToCheckout = () => {
     if (addressItems.length === 0) return Alert.alert("Please add an address");
@@ -66,10 +72,18 @@ export default function CartScreen() {
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
       <Header title="My Cart" />
+      <CartPromoModal
+        closeModal={() => setOpenModalOpen(false)}
+        openModal={() => setOpenModalOpen(true)}
+        isOpen={openPromoModal}
+      />
       <View style={styles.body}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <CartItems />
-          <View style={styles.promo}>
+          <TouchableOpacity
+            style={styles.promo}
+            onPress={() => setOpenModalOpen(true)}
+          >
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Image
                 source={require("../../images/coupon.png")}
@@ -77,10 +91,10 @@ export default function CartScreen() {
               />
               <Text style={styles.promoText}>Add Promo Coden</Text>
             </View>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => setOpenModalOpen(true)}>
               <Material name="chevron-right" size={32} />
             </TouchableOpacity>
-          </View>
+          </TouchableOpacity>
           <CartSubtotal />
           <CartUbication />
         </ScrollView>

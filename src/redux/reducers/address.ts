@@ -3,15 +3,10 @@ import { AddressState, IAddress, IAddressAction } from "../models/address";
 
 const initialState: AddressState = {
   selectedAddress: {
-    name_tag: "Home",
-    address: "13A Havinr Street, New York",
+    name_tag: "",
+    address: "",
   },
-  items: [
-    {
-      name_tag: "Home",
-      address: "13A Havinr Street, New York",
-    },
-  ],
+  items: [],
 };
 
 /* Reducers */

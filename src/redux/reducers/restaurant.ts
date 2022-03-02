@@ -14,7 +14,7 @@ export const getRestaurants = createAsyncThunk<any, void>(
   async () => {
     const response = await fetchData(
       "6527pEhQpqET7QJ5nEXSRAlP4oQfpRI1sJQYt6CbEWDSUPMS17IudcbxbpVqpNUNbIfH94q9giPucxLFZxDXW7pP4__4jmixgDCp45VBS88s4cVbOGbSqul8skoRYnYx"
-    ).get("/search?term=restaurants&location=TX");
+    ).get("/search?term=restaurants&location=LA");
     const dataResponse = (await response).data;
     return dataResponse.businesses;
   }

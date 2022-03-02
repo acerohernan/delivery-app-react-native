@@ -14,7 +14,7 @@ const screenHeight = Dimensions.get("screen").height;
 
 interface Props {
   children?: any;
-  isOpen?: boolean;
+  isOpen: boolean;
   closeModal: () => void;
   openModal: () => void;
 }

@@ -12,6 +12,7 @@ interface InputProps {
   autoFocus?: boolean;
   maxLength?: number;
   name: string;
+  numeric?: boolean;
 }
 
 export default function Input({
@@ -21,6 +22,7 @@ export default function Input({
   autoFocus,
   name,
   maxLength,
+  numeric,
 }: InputProps) {
   return (
     <View style={styles.container}>
@@ -31,6 +33,7 @@ export default function Input({
         autoFocus={autoFocus}
         key="name_tag"
         maxLength={maxLength ? maxLength : 99}
+        keyboardType={numeric ? "numeric" : "default"}
       />
       <Material name={iconName} style={styles.inputIcon} size={25} />
     </View>

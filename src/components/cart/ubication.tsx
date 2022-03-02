@@ -33,7 +33,9 @@ export default function CartUbication() {
           {!noAddress && (
             <Text style={styles.title}>Deliver to: {name_tag}</Text>
           )}
-          {noAddress && <Text style={styles.text}>Please add an address</Text>}
+          {noAddress && !selectedAddress.name_tag && (
+            <Text style={styles.text}>Please add an address</Text>
+          )}
           <TouchableOpacity
             style={styles.button}
             onPress={() => navigation.navigate("Address")}

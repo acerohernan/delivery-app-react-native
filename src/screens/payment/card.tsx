@@ -9,7 +9,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import Header from "../../components/header";
@@ -19,6 +19,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { DashboardStackParamsList } from "../../types/navigation";
 import { useAppDispatch } from "../../redux";
 import { changePaymentMethod } from "../../redux/reducers/cart";
+import Input from "../../components/input";
 
 /* Variables */
 const screenWidth = Dimensions.get("screen").width;
@@ -26,13 +27,45 @@ const screenHeight = Dimensions.get("screen").height;
 
 /* Components */
 
+interface FormValues {
+  card_holder: string;
+  card_number: string;
+  month_exp: string;
+  year_exp: string;
+  cvc: string;
+}
+
 //Main
 export default function CreditCardScreen() {
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [errors, setErrors] = useState<FormValues>({
+    card_holder: "",
+    card_number: "",
+    month_exp: "",
+    year_exp: "",
+    cvc: "",
+  });
+  const [inputValues, setInputValues] = useState<FormValues>({
+    card_holder: "",
+    card_number: "",
+    month_exp: "",
+    year_exp: "",
+    cvc: "",
+  });
+
   const dispatch = useAppDispatch();
   const navigation =
     useNavigation<NativeStackNavigationProp<DashboardStackParamsList>>();
 
+  const handleInputValue = (name: string, text: string) => {
+    setInputValues({
+      ...inputValues,
+      [name]: text,
+    });
+  };
+
   const handleSelectCard = () => {
+    setIsSubmitted(true);
     dispatch(changePaymentMethod("card"));
     navigation.navigate("Checkout");
   };
@@ -49,40 +82,72 @@ export default function CreditCardScreen() {
           />
           <View style={styles.form}>
             <KeyboardAvoidingView>
-              <View style={styles.inputContainer}>
-                <Text style={styles.inputLabel}>CARDHOLDER NAME</Text>
-                <TextInput style={styles.input} />
-              </View>
-              <View style={styles.inputContainer}>
-                <Text style={styles.inputLabel}>CARD NUMBER</Text>
-                <View style={styles.someInputContainer}>
-                  <TextInput style={styles.cardNumberInput} />
-                  <TextInput style={styles.cardNumberInput} />
-                  <TextInput style={styles.cardNumberInput} />
-                  <TextInput style={styles.cardNumberInput} />
-                </View>
-              </View>
+              <Input
+                iconName="account-outline"
+                placeholder="Cardholder Name"
+                onChangeText={handleInputValue}
+                name="card_holder"
+              />
+              <Text style={styles.error}>Please enter your full name</Text>
+              <Input
+                iconName="credit-card-outline"
+                placeholder="Card Number"
+                onChangeText={handleInputValue}
+                name="card_number"
+                maxLength={16}
+                numeric
+              />
+              <Text style={styles.error}>Please enter your card number</Text>
               <View style={styles.expiration}>
-                <View style={styles.inputContainer}>
+                <View>
                   <Text style={styles.inputLabel}>EXPIRATION DATE</Text>
                   <View style={styles.someInputContainer}>
                     <TextInput
                       style={styles.expirationInput}
                       placeholder="Month"
+                      maxLength={2}
+                      keyboardType="numeric"
+                      onChangeText={(text) =>
+                        handleInputValue("month_exp", text)
+                      }
                     />
                     <Text style={{ marginRight: 10, fontSize: 26 }}>/</Text>
                     <TextInput
                       style={styles.expirationInput}
                       placeholder="Year"
+                      maxLength={2}
+                      keyboardType="numeric"
+                      onChangeText={(text) =>
+                        handleInputValue("year_exp", text)
+                      }
                     />
                   </View>
                 </View>
-                <View style={styles.inputContainer}>
+                <View>
                   <Text style={styles.inputLabel}>CVV/CVC</Text>
                   <View style={styles.someInputContainer}>
-                    <TextInput style={styles.expirationInput} />
+                    <TextInput
+                      style={styles.expirationInput}
+                      maxLength={3}
+                      keyboardType="numeric"
+                      onChangeText={(text) => handleInputValue("cvc", text)}
+                    />
                   </View>
                 </View>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "flex-start",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={styles.error}>
+                  Please enter your expiration date
+                </Text>
+                <Text style={[styles.error, { width: 83 }]}>
+                  Please enter your CVC
+                </Text>
               </View>
             </KeyboardAvoidingView>
           </View>
@@ -161,16 +226,22 @@ const styles = StyleSheet.create({
     backgroundColor: colors.gray,
     padding: 10,
     color: "gray",
-    fontWeight: "bold",
     borderRadius: 10,
     textAlign: "center",
     marginRight: 10,
+    borderColor: "#C2C2CB",
+    borderWidth: 2,
   },
 
   expiration: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    marginTop: 20,
+  },
+
+  error: {
+    color: "red",
   },
 
   footer: {

@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { colors } from "../../styles";
 import { useSubtotal } from "../../utils/useSubtotal";
+import { useAppSelector } from "../../redux";
 
 interface Props {
   order?: boolean;
@@ -9,6 +10,8 @@ interface Props {
 
 export default function CartSubtotal({ order }: Props) {
   const [subtotal, subtotalOrder] = useSubtotal();
+
+  const { promo_code_discount } = useAppSelector((state) => state.cart);
 
   return (
     <View style={styles.container}>
@@ -21,8 +24,14 @@ export default function CartSubtotal({ order }: Props) {
         </View>
         <View style={styles.tableItem}>
           <Text style={styles.tableLabel}>Discount</Text>
-          <Text style={styles.tableLabel}>$10.00</Text>
+          <Text style={styles.tableLabel}>$5.00</Text>
         </View>
+        {promo_code_discount ? (
+          <View style={styles.tableItem}>
+            <Text style={styles.deliveryLabel}>Promo Code Discount</Text>
+            <Text style={styles.deliveryLabel}>${promo_code_discount}.00</Text>
+          </View>
+        ) : null}
         <View style={styles.tableItem}>
           <Text style={styles.deliveryLabel}>Delivery Fee</Text>
           <Text style={styles.deliveryLabel}>Free</Text>
@@ -32,7 +41,7 @@ export default function CartSubtotal({ order }: Props) {
         <View style={styles.totalContainer}>
           <Text style={styles.total}>Total</Text>
           <Text style={styles.total}>
-            ${(Number(subtotal) + 10).toFixed(2)}
+            ${(Number(subtotal) - 5 - promo_code_discount).toFixed(2)}
           </Text>
         </View>
       )}
@@ -41,7 +50,7 @@ export default function CartSubtotal({ order }: Props) {
           <View style={styles.tableItem}>
             <Text style={styles.tableLabel}>Total</Text>
             <Text style={styles.tableLabel}>
-              ${(Number(subtotalOrder) + 10).toFixed(2)}
+              ${(Number(subtotalOrder) - 5 - promo_code_discount).toFixed(2)}
             </Text>
           </View>
           <View style={styles.tableItem}>
