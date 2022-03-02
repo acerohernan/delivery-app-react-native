@@ -5,12 +5,13 @@ const initialState: CartState = {
   restaurant: "",
   items: [],
   orderCreated: false,
+  orderItems: [],
+  orderRestaurant: "",
   paymentMethod: "",
 };
 
 /* Reducers */
 const addItemReducer = (state: CartState, { payload }: MenuItemAction) => {
-  state.orderCreated = false;
   state.restaurant = payload.restaurantName;
 
   const isHere = state.items.find((item) => item.title === payload.title);
@@ -30,7 +31,6 @@ const addItemReducer = (state: CartState, { payload }: MenuItemAction) => {
 };
 
 const removeItemReducer = (state: CartState, { payload }: MenuItemAction) => {
-  state.orderCreated = false;
   state.restaurant = payload.restaurantName;
 
   const isHere = state.items.find((item) => item.title === payload.title);
@@ -61,6 +61,10 @@ const changePaymentMethodReducer = (
 
 const createOrderReducer = (state: CartState) => {
   state.orderCreated = true;
+  state.orderItems = state.items;
+  state.orderRestaurant = state.restaurant;
+  state.items = [];
+  state.restaurant = "";
 };
 
 const cartSlice = createSlice({

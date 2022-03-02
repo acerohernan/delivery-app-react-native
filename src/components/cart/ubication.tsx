@@ -20,23 +20,30 @@ export default function CartUbication() {
   const navigation =
     useNavigation<NativeStackNavigationProp<DashboardStackParamsList>>();
 
-  const { selectedAddress } = useAppSelector((state) => state.address);
+  const { selectedAddress, items } = useAppSelector((state) => state.address);
   const { name_tag, address } = selectedAddress;
+
+  const noAddress = items.length === 0;
 
   return (
     <View style={styles.container}>
       <Image source={require("../../images/map.png")} style={styles.image} />
       <View style={styles.details}>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Deliver to: {name_tag}</Text>
+          {!noAddress && (
+            <Text style={styles.title}>Deliver to: {name_tag}</Text>
+          )}
+          {noAddress && <Text style={styles.text}>Please add an address</Text>}
           <TouchableOpacity
             style={styles.button}
             onPress={() => navigation.navigate("Address")}
           >
-            <Text style={styles.buttonText}>Change</Text>
+            <Text style={styles.buttonText}>
+              {noAddress ? "Add" : "Change"}
+            </Text>
           </TouchableOpacity>
         </View>
-        <Text style={styles.text}>{address}</Text>
+        {!noAddress && <Text style={styles.text}>{address}</Text>}
       </View>
     </View>
   );

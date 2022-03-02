@@ -8,14 +8,16 @@ interface Props {
 }
 
 export default function CartSubtotal({ order }: Props) {
-  const subtotal = useSubtotal();
+  const [subtotal, subtotalOrder] = useSubtotal();
 
   return (
     <View style={styles.container}>
       <View style={styles.table}>
         <View style={styles.tableItem}>
           <Text style={styles.tableLabel}>Item Total</Text>
-          <Text style={styles.tableLabel}>${subtotal}</Text>
+          <Text style={styles.tableLabel}>
+            ${order ? subtotalOrder : subtotal}
+          </Text>
         </View>
         <View style={styles.tableItem}>
           <Text style={styles.tableLabel}>Discount</Text>
@@ -35,18 +37,18 @@ export default function CartSubtotal({ order }: Props) {
         </View>
       )}
       {order && (
-        <>
+        <View style={{ paddingBottom: 80 }}>
           <View style={styles.tableItem}>
             <Text style={styles.tableLabel}>Total</Text>
             <Text style={styles.tableLabel}>
-              ${(Number(subtotal) + 10).toFixed(2)}
+              ${(Number(subtotalOrder) + 10).toFixed(2)}
             </Text>
           </View>
           <View style={styles.tableItem}>
             <Text style={styles.tableLabel}>Payment Method</Text>
             <Text style={styles.tableLabel}>Visa 45XX</Text>
           </View>
-        </>
+        </View>
       )}
     </View>
   );

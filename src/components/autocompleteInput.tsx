@@ -5,8 +5,26 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 import { colors } from "../styles";
 
 export default function AutocompleteInput() {
+  if (true)
+    return (
+      <GooglePlacesAutocomplete
+        placeholder="Address"
+        onPress={(data, details = null) => {
+          // 'details' is provided when fetchDetails = true
+          console.log(data);
+        }}
+        query={{
+          key: "AIzaSyDrs5AlcUEEaB4nOwy_PSd-8qOmdQdYbFA",
+          language: "en",
+        }}
+        styles={{
+          textInput: styles.input,
+        }}
+      />
+    );
+
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <GooglePlacesAutocomplete
         placeholder="Address"
         onPress={(data, details = null) => {

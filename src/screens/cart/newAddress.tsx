@@ -19,7 +19,6 @@ import Input from "../../components/input";
 
 /* Variables */
 const screenHeight = Dimensions.get("screen").height;
-const screenWidth = Dimensions.get("screen").width;
 
 interface FormValues {
   name_tag: string;

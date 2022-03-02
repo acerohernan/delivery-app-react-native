@@ -8,8 +8,7 @@ import {
 import React from "react";
 import Material from "react-native-vector-icons/MaterialCommunityIcons";
 import { colors } from "../styles";
-import { color } from "react-native-elements/dist/helpers";
-import { useNavigation } from "@react-navigation/native";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { DashboardStackParamsList } from "../types/navigation";
 import { useAppSelector } from "../redux";
@@ -63,13 +62,24 @@ const NavLink = ({ active, iconName, pageName }: LinkProps) => {
 
 export default function MainNav() {
   const { orderCreated } = useAppSelector((state) => state.cart);
+  const { name } = useRoute<RouteProp<DashboardStackParamsList>>();
 
   return (
     <View style={[styles.container, styles.elevation, styles.shadowProp]}>
-      <NavLink active pageName="Home" />
-      <NavLink iconName="cart-outline" pageName="Cart" />
-      {orderCreated && <NavLink iconName="moped" pageName="Order" />}
-      <NavLink iconName="account-outline" pageName="Profile" />
+      <NavLink active={name === "Home"} pageName="Home" />
+      <NavLink
+        iconName="cart-outline"
+        pageName="Cart"
+        active={name === "Cart"}
+      />
+      {orderCreated && (
+        <NavLink iconName="moped" pageName="Order" active={name === "Order"} />
+      )}
+      <NavLink
+        iconName="account-outline"
+        pageName="Profile"
+        active={name === "Profile"}
+      />
     </View>
   );
 }

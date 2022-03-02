@@ -96,12 +96,19 @@ export default function AddressScreen() {
 
   const { items } = useAppSelector((state) => state.address);
 
+  const noAddress = items.length === 0;
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
       <Header title="Addresses" />
       <View style={styles.body}>
-        <Text style={styles.title}>Choose one address to add</Text>
+        <Text style={styles.title}>
+          {noAddress
+            ? "Please create a new address"
+            : "Choose one address to add or create"}
+        </Text>
+
         <View>
           {items &&
             items.map((item, index) => <AddressItem key={index} {...item} />)}

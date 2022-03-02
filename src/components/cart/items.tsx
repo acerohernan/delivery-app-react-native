@@ -30,13 +30,32 @@ const ItemCart = ({
   checkout,
 }: ItemCartProps) => {
   const dispatch = useAppDispatch();
+  const { restaurant } = useAppSelector((state) => state.cart);
 
   const handleAddToCart = () => {
-    dispatch(addItem({ title, description, image, quantity, price }));
+    dispatch(
+      addItem({
+        title,
+        description,
+        image,
+        quantity,
+        price,
+        restaurantName: restaurant,
+      })
+    );
   };
 
   const handleRemoveToCart = () => {
-    dispatch(removeItem({ title, description, image, quantity, price }));
+    dispatch(
+      removeItem({
+        title,
+        description,
+        image,
+        quantity,
+        price,
+        restaurantName: restaurant,
+      })
+    );
   };
 
   const styles = StyleSheet.create({
@@ -120,10 +139,22 @@ const ItemCart = ({
 
 interface CartItemsProps {
   checkout?: boolean;
+  order?: boolean;
 }
 
-export default function CartItems({ checkout }: CartItemsProps) {
-  const { items } = useAppSelector((state) => state.cart);
+export default function CartItems({ checkout, order }: CartItemsProps) {
+  const { items, orderItems } = useAppSelector((state) => state.cart);
+
+  if (order) {
+    return (
+      <View>
+        {orderItems &&
+          orderItems.map((item, index) => (
+            <ItemCart key={index} checkout={checkout} {...item} />
+          ))}
+      </View>
+    );
+  }
 
   return (
     <View>
