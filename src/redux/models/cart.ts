@@ -1,6 +1,8 @@
 export interface CartState {
   restaurant: string;
   items: Array<IMenuItem>;
+  orderCreated: boolean;
+  paymentMethod: "" | "paypal" | "card";
 }
 
 export interface IMenuItem {

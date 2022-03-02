@@ -8,18 +8,27 @@ import {
 } from "react-native";
 import React from "react";
 import { colors } from "../../styles";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { DashboardStackParamsList } from "../../types/navigation";
 
 /* Variables */
 const screenWidth = Dimensions.get("screen").width;
 
 export default function CartUbication() {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<DashboardStackParamsList>>();
+
   return (
     <View style={styles.container}>
       <Image source={require("../../images/map.png")} style={styles.image} />
       <View style={styles.details}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Deliver to: Home</Text>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate("Address")}
+          >
             <Text style={styles.buttonText}>Change</Text>
           </TouchableOpacity>
         </View>

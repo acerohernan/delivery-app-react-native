@@ -12,6 +12,7 @@ import { color } from "react-native-elements/dist/helpers";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { DashboardStackParamsList } from "../types/navigation";
+import { useAppSelector } from "../redux";
 
 /* Variables */
 const screenWidth = Dimensions.get("screen").width;
@@ -61,10 +62,13 @@ const NavLink = ({ active, iconName, pageName }: LinkProps) => {
 };
 
 export default function MainNav() {
+  const { orderCreated } = useAppSelector((state) => state.cart);
+
   return (
     <View style={[styles.container, styles.elevation, styles.shadowProp]}>
       <NavLink active pageName="Home" />
       <NavLink iconName="cart-outline" pageName="Cart" />
+      {orderCreated && <NavLink iconName="moped" pageName="Order" />}
       <NavLink iconName="account-outline" pageName="Profile" />
     </View>
   );

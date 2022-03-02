@@ -3,7 +3,11 @@ import React from "react";
 import { colors } from "../../styles";
 import { useSubtotal } from "../../utils/useSubtotal";
 
-export default function CartSubtotal() {
+interface Props {
+  order?: boolean;
+}
+
+export default function CartSubtotal({ order }: Props) {
   const subtotal = useSubtotal();
 
   return (
@@ -22,10 +26,28 @@ export default function CartSubtotal() {
           <Text style={styles.deliveryLabel}>Free</Text>
         </View>
       </View>
-      <View style={styles.totalContainer}>
-        <Text style={styles.total}>Total</Text>
-        <Text style={styles.total}>${(Number(subtotal) + 10).toFixed(2)}</Text>
-      </View>
+      {!order && (
+        <View style={styles.totalContainer}>
+          <Text style={styles.total}>Total</Text>
+          <Text style={styles.total}>
+            ${(Number(subtotal) + 10).toFixed(2)}
+          </Text>
+        </View>
+      )}
+      {order && (
+        <>
+          <View style={styles.tableItem}>
+            <Text style={styles.tableLabel}>Total</Text>
+            <Text style={styles.tableLabel}>
+              ${(Number(subtotal) + 10).toFixed(2)}
+            </Text>
+          </View>
+          <View style={styles.tableItem}>
+            <Text style={styles.tableLabel}>Payment Method</Text>
+            <Text style={styles.tableLabel}>Visa 45XX</Text>
+          </View>
+        </>
+      )}
     </View>
   );
 }
@@ -45,6 +67,7 @@ const styles = StyleSheet.create({
   },
   tableLabel: {
     fontSize: 16,
+    color: "black",
   },
   deliveryLabel: {
     color: colors.green,

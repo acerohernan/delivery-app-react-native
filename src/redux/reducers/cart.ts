@@ -4,10 +4,14 @@ import { CartState, MenuItemAction } from "../models/cart";
 const initialState: CartState = {
   restaurant: "",
   items: [],
+  orderCreated: false,
+  paymentMethod: "",
 };
 
 /* Reducers */
 const addItemReducer = (state: CartState, { payload }: MenuItemAction) => {
+  state.orderCreated = false;
+
   const isHere = state.items.find((item) => item.title === payload.title);
 
   if (isHere) {
@@ -25,6 +29,8 @@ const addItemReducer = (state: CartState, { payload }: MenuItemAction) => {
 };
 
 const removeItemReducer = (state: CartState, { payload }: MenuItemAction) => {
+  state.orderCreated = false;
+
   const isHere = state.items.find((item) => item.title === payload.title);
   const filteredItems = state.items.filter(
     (item) => item.title !== payload.title
@@ -44,14 +50,32 @@ const removeItemReducer = (state: CartState, { payload }: MenuItemAction) => {
   }
 };
 
+const changePaymentMethodReducer = (
+  state: CartState,
+  { payload }: PaymentAction
+) => {
+  state.paymentMethod = payload;
+};
+
+const createOrderReducer = (state: CartState) => {
+  state.orderCreated = true;
+};
+
 const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
     addItem: addItemReducer,
     removeItem: removeItemReducer,
+    createOrder: createOrderReducer,
+    changePaymentMethod: changePaymentMethodReducer,
   },
 });
 
-export const { addItem, removeItem } = cartSlice.actions;
+interface PaymentAction {
+  payload: "paypal" | "card";
+}
+
+export const { addItem, removeItem, changePaymentMethod, createOrder } =
+  cartSlice.actions;
 export default cartSlice.reducer;

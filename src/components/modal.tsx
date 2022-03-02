@@ -1,68 +1,63 @@
 import {
   Dimensions,
   StyleSheet,
-  Image,
   Text,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from "react-native";
-import React, { useState } from "react";
-import Modal from "react-native-modalbox";
-import Material from "react-native-vector-icons/MaterialCommunityIcons";
-import { colors } from "../styles";
+import React from "react";
 
 /* Variables */
 const screenWidth = Dimensions.get("screen").width;
+const screenHeight = Dimensions.get("screen").height;
 
-export default function ModalComponent() {
-  const [isOpen, setIsOpen] = useState(true);
+interface Props {
+  children?: any;
+  isOpen?: boolean;
+  closeModal: () => void;
+  openModal: () => void;
+}
+
+export default function Modal({
+  children,
+  closeModal,
+  openModal,
+  isOpen,
+}: Props) {
+  if (!isOpen) return null;
 
   return (
-    <Modal isOpen={isOpen} style={styles.container} position="center">
-      <Image source={require("../images/check.png")} style={styles.image} />
-      <Text style={styles.title}>You Place The Order Successfully</Text>
-      <Text style={styles.text}>
-        You placed the order successfully. You will get your your order within
-        25 minutes. Thanks for usings our services. Enjoy your food.
-      </Text>
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Keep Browsing Food</Text>
+    <TouchableOpacity style={styles.container} onPress={() => closeModal()}>
+      <TouchableOpacity
+        onPress={() => openModal()}
+        style={styles.body}
+        activeOpacity={1}
+      >
+        {children}
       </TouchableOpacity>
-    </Modal>
+    </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: 320,
-    borderRadius: 30,
-    width: screenWidth - 30,
-    padding: 20,
+    position: "absolute",
+    width: screenWidth,
+    height: screenHeight,
+    backgroundColor: "rgba(38, 42, 43, 0.542)",
     flexDirection: "column",
-    justifyContent: "center",
     alignItems: "center",
+    justifyContent: "center",
+    zIndex: 3,
   },
-  image: {
-    width: 80,
-    height: 80,
-    marginBottom: 5,
+  body: {
+    backgroundColor: "white",
+    zIndex: 4,
+    width: screenWidth - 40,
+    borderRadius: 20,
+    padding: 20,
   },
-  title: {
-    marginBottom: 20,
-    fontWeight: "bold",
-    fontSize: 20,
-  },
-  text: {
-    color: "gray",
-    textAlign: "center",
-    fontSize: 15,
-  },
-  button: {
-    marginTop: 30,
-  },
-  buttonText: {
-    color: colors.green,
-    fontSize: 17,
-    fontWeight: "bold",
-  },
+  image: {},
+  text: {},
 });

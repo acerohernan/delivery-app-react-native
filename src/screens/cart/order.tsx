@@ -13,6 +13,8 @@ import { StatusBar } from "expo-status-bar";
 import { colors } from "../../styles";
 import Material from "react-native-vector-icons/MaterialCommunityIcons";
 import Header from "../../components/header";
+import CartItems from "../../components/cart/items";
+import CartSubtotal from "../../components/cart/subtotal";
 
 /* Variables */
 const screenHeight = Dimensions.get("screen").height;
@@ -320,7 +322,7 @@ export default function OrderScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
-      <Header title="Order Tracking" />
+      <Header title="Order Tracking" linkToHome />
       <View style={styles.body}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <RoadMap />
@@ -330,8 +332,8 @@ export default function OrderScreen() {
               <Text style={styles.itemRestaurant}>McDonald'S</Text>
             </View>
           </View>
-          <Items />
-          <Subtotal />
+          <CartItems checkout />
+          <CartSubtotal order />
         </ScrollView>
       </View>
     </SafeAreaView>
@@ -345,7 +347,8 @@ const styles = StyleSheet.create({
   body: {
     height: screenHeight - 140,
     paddingHorizontal: 20,
-    paddingTop: 10,
+    paddingVertical: 10,
+    paddingBottom: 25,
   },
   itemContainer: {},
   itemTitleContainer: {

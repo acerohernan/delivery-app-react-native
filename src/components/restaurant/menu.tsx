@@ -13,6 +13,8 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { DashboardStackParamsList } from "../../types/navigation";
 import { colors } from "../../styles";
 import { menuItems } from "../../utils/data";
+import { useAppDispatch } from "../../redux";
+import { addItem } from "../../redux/reducers/cart";
 
 //Variables
 const screenWidth = Dimensions.get("screen").width;
@@ -28,6 +30,17 @@ interface MenuItemProps {
 const MenuItem = ({ title, description, price, image }: MenuItemProps) => {
   const navigation =
     useNavigation<NativeStackNavigationProp<DashboardStackParamsList>>();
+  const dispatch = useAppDispatch();
+
+  const handleAddToCart = () => {
+    dispatch(addItem({ title, description, price, image }));
+    navigation.navigate("MenuItem", {
+      title,
+      description,
+      price,
+      image,
+    });
+  };
 
   const styles = StyleSheet.create({
     container: {
@@ -103,7 +116,7 @@ const MenuItem = ({ title, description, price, image }: MenuItemProps) => {
         <Text style={styles.text}>{description}</Text>
         <View style={styles.price}>
           <Text style={styles.priceText}>{price}</Text>
-          <TouchableOpacity style={styles.addButton}>
+          <TouchableOpacity style={styles.addButton} onPress={handleAddToCart}>
             <Material name="plus" size={18} color="white" />
           </TouchableOpacity>
         </View>

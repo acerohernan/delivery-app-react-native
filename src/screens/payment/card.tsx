@@ -14,6 +14,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import Header from "../../components/header";
 import { colors } from "../../styles";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { DashboardStackParamsList } from "../../types/navigation";
+import { useAppDispatch } from "../../redux";
+import { changePaymentMethod } from "../../redux/reducers/cart";
 
 /* Variables */
 const screenWidth = Dimensions.get("screen").width;
@@ -23,9 +28,18 @@ const screenHeight = Dimensions.get("screen").height;
 
 //Main
 export default function CreditCardScreen() {
+  const dispatch = useAppDispatch();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<DashboardStackParamsList>>();
+
+  const handleSelectCard = () => {
+    dispatch(changePaymentMethod("card"));
+    navigation.navigate("Checkout");
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar style="auto" />;
+      <StatusBar style="auto" />
       <Header title="My Cards" />
       <View style={styles.body}>
         <ScrollView>
@@ -75,7 +89,10 @@ export default function CreditCardScreen() {
         </ScrollView>
       </View>
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.footerButton}>
+        <TouchableOpacity
+          style={styles.footerButton}
+          onPress={handleSelectCard}
+        >
           <Text style={styles.footerText}>Add Card</Text>
         </TouchableOpacity>
       </View>

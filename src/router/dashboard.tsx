@@ -10,6 +10,8 @@ import OrderScreen from "../screens/cart/order";
 import MethodScreen from "../screens/payment/method";
 import CreditCardScreen from "../screens/payment/card";
 import ProfileScreen from "../screens/dashboard/profile";
+import AddressScreen from "../screens/cart/address";
+import NewAddressScreen from "../screens/cart/newAddress";
 
 const DashBoardStack = createNativeStackNavigator<DashboardStackParamsList>();
 
@@ -31,6 +33,8 @@ export default function DashboardStackComponent() {
         name="CreditCardMethod"
         component={CreditCardScreen}
       />
+      <DashBoardStack.Screen name="Address" component={AddressScreen} />
+      <DashBoardStack.Screen name="NewAddress" component={NewAddressScreen} />
     </DashBoardStack.Navigator>
   );
 }

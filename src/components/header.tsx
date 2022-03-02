@@ -4,14 +4,33 @@ import Material from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { DashboardStackParamsList } from "../types/navigation";
+import { useAppSelector } from "../redux";
 
 interface Props {
   title: string;
+  linkToHome?: boolean;
 }
 
-export default function Header({ title }: Props) {
+export default function Header({ title, linkToHome }: Props) {
   const navigation =
     useNavigation<NativeStackNavigationProp<DashboardStackParamsList>>();
+
+  if (linkToHome) {
+    return (
+      <View style={styles.header}>
+        <TouchableOpacity
+          style={styles.headerButton}
+          onPress={() => navigation.navigate("Home")}
+        >
+          <Material name="chevron-left" size={40} />
+        </TouchableOpacity>
+        <Text style={styles.title}>{title}</Text>
+        <TouchableOpacity style={styles.headerButton}>
+          <Material name="bell-outline" size={30} color="white" />
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.header}>

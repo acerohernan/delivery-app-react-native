@@ -5,8 +5,10 @@ import {
   View,
   Image,
   Dimensions,
+  TextInput,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
+import Material from "react-native-vector-icons/MaterialCommunityIcons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import Header from "../../components/header";
@@ -16,60 +18,74 @@ import { changePaymentMethod } from "../../redux/reducers/cart";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { DashboardStackParamsList } from "../../types/navigation";
+import { createAddress } from "../../redux/reducers/address";
+import Input from "../../components/input";
 
 /* Variables */
 const screenHeight = Dimensions.get("screen").height;
+const screenWidth = Dimensions.get("screen").width;
+
+interface FormValues {
+  name_tag: string;
+  address: string;
+}
 
 //Main
-export default function MethodScreen() {
+export default function NewAddressScreen() {
+  const [inputValues, setInputValues] = useState<FormValues>({
+    name_tag: "",
+    address: "",
+  });
+
   const navigation =
     useNavigation<NativeStackNavigationProp<DashboardStackParamsList>>();
   const dispatch = useAppDispatch();
 
-  const handleSelectPaypal = () => {
-    dispatch(changePaymentMethod("paypal"));
-    navigation.navigate("Checkout");
+  const handleAddAddress = () => {
+    dispatch(
+      createAddress({
+        ...inputValues,
+      })
+    );
+    navigation.navigate("Address");
+  };
+
+  const handleInputChange = (name: string, text: string) => {
+    setInputValues({ ...inputValues, [name]: text });
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
-      <Header title="Add a Payment Method" />
+      <Header title="New Address" />
       <View style={styles.body}>
-        <Text style={styles.title}>Choose payment method to add</Text>
-        <View style={styles.methods}>
-          <TouchableOpacity style={styles.button} onPress={handleSelectPaypal}>
-            <Image
-              style={styles.buttonImage}
-              source={require("../../images/icons/paypal.png")}
-            />
-            <View>
-              <Text style={styles.buttonTitle}>Paypal</Text>
-              <Text style={styles.buttonText}>
-                Faster and safer way to send money
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.navigate("CreditCardMethod")}
-          >
-            <Image
-              style={styles.buttonImage}
-              source={require("../../images/icons/card.png")}
-            />
-            <View>
-              <Text style={styles.buttonTitle}>Credit Card</Text>
-              <Text style={styles.buttonText}>
-                Faster and safer way to send money
-              </Text>
-            </View>
-          </TouchableOpacity>
+        <Text style={styles.title}>
+          Write the information about your Address
+        </Text>
+        <View style={styles.form}>
+          <Input
+            placeholder="Name Tag"
+            iconName="home-edit-outline"
+            onChangeText={handleInputChange}
+            name="name_tag"
+            maxLength={12}
+            autoFocus
+          />
+          <Input
+            placeholder="Address"
+            iconName="map-marker-outline"
+            name="address"
+            onChangeText={handleInputChange}
+            maxLength={40}
+          />
         </View>
       </View>
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.footerButton}>
-          <Text style={styles.footerText}>Next</Text>
+        <TouchableOpacity
+          style={styles.footerButton}
+          onPress={handleAddAddress}
+        >
+          <Text style={styles.footerText}>Add</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -116,6 +132,8 @@ const styles = StyleSheet.create({
     color: "#aaaab5",
     fontSize: 12,
   },
+
+  form: {},
 
   footer: {
     height: 80,
