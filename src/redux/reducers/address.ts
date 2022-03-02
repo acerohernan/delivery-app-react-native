@@ -2,6 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 import { AddressState, IAddress, IAddressAction } from "../models/address";
 
 const initialState: AddressState = {
+  selectedAddress: {
+    name_tag: "Home",
+    address: "13A Havinr Street, New York",
+  },
   items: [
     {
       name_tag: "Home",
@@ -26,20 +30,6 @@ interface UpdateAddressAction {
   };
 }
 
-const updateAddressReducer = (
-  state: AddressState,
-  { payload }: UpdateAddressAction
-) => {
-  const itemToEdit = state.items.find(
-    (item) => item.name_tag === payload.addressToEditNameTag
-  );
-  const filteredItems = state.items.filter(
-    (item) => item.name_tag !== payload.addressToEditNameTag
-  );
-
-  state.items = [...filteredItems, { ...payload.newAddress }];
-};
-
 const removeAddressReducer = (
   state: AddressState,
   { payload }: IAddressAction
@@ -49,16 +39,22 @@ const removeAddressReducer = (
   );
 };
 
+const selectAddressReducer = (
+  state: AddressState,
+  { payload }: IAddressAction
+) => {
+  state.selectedAddress = payload;
+};
 const addressSlice = createSlice({
   name: "address",
   initialState,
   reducers: {
     createAddress: createAddressReducer,
-    updateAddress: updateAddressReducer,
     removeAddress: removeAddressReducer,
+    selectAddress: selectAddressReducer,
   },
 });
 
-export const { createAddress, updateAddress, removeAddress } =
+export const { createAddress, removeAddress, selectAddress } =
   addressSlice.actions;
 export default addressSlice.reducer;

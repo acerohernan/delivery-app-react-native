@@ -25,20 +25,28 @@ interface MenuItemProps {
   description: string;
   price: string;
   image: string;
+  restaurantName: string;
 }
 
-const MenuItem = ({ title, description, price, image }: MenuItemProps) => {
+const MenuItem = ({
+  title,
+  description,
+  price,
+  image,
+  restaurantName,
+}: MenuItemProps) => {
   const navigation =
     useNavigation<NativeStackNavigationProp<DashboardStackParamsList>>();
   const dispatch = useAppDispatch();
 
   const handleAddToCart = () => {
-    dispatch(addItem({ title, description, price, image }));
+    dispatch(addItem({ title, description, price, image, restaurantName }));
     navigation.navigate("MenuItem", {
       title,
       description,
       price,
       image,
+      restaurantName,
     });
   };
 
@@ -107,6 +115,7 @@ const MenuItem = ({ title, description, price, image }: MenuItemProps) => {
           description,
           price,
           image,
+          restaurantName,
         })
       }
     >
@@ -128,9 +137,13 @@ const MenuItem = ({ title, description, price, image }: MenuItemProps) => {
 //Menu
 interface MenuProps {
   selectedCategory: string;
+  restaurantName: string;
 }
 
-export default function RestaurantMenu({ selectedCategory }: MenuProps) {
+export default function RestaurantMenu({
+  selectedCategory,
+  restaurantName,
+}: MenuProps) {
   const [items, setItems] = useState(menuItems);
 
   useEffect(() => {
@@ -145,7 +158,7 @@ export default function RestaurantMenu({ selectedCategory }: MenuProps) {
   return (
     <View style={styles.container}>
       {items.map((item, index) => (
-        <MenuItem key={index} {...item} />
+        <MenuItem key={index} {...item} restaurantName={restaurantName} />
       ))}
     </View>
   );

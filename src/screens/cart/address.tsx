@@ -13,11 +13,11 @@ import { StatusBar } from "expo-status-bar";
 import Header from "../../components/header";
 import { colors } from "../../styles";
 import { useAppDispatch, useAppSelector } from "../../redux";
-import { changePaymentMethod } from "../../redux/reducers/cart";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { DashboardStackParamsList } from "../../types/navigation";
 import { IAddress } from "../../redux/models/address";
+import { removeAddress, selectAddress } from "../../redux/reducers/address";
 
 /* Variables */
 const screenHeight = Dimensions.get("screen").height;
@@ -27,6 +27,16 @@ const screenWidth = Dimensions.get("screen").width;
 const AddressItem = ({ name_tag, address }: IAddress) => {
   const navigation =
     useNavigation<NativeStackNavigationProp<DashboardStackParamsList>>();
+  const dispatch = useAppDispatch();
+
+  const handleRemoveAddress = () => {
+    dispatch(removeAddress({ name_tag, address }));
+  };
+
+  const handleSelectAddress = () => {
+    dispatch(selectAddress({ name_tag, address }));
+    navigation.navigate("Cart");
+  };
 
   const styles = StyleSheet.create({
     container: {
@@ -63,15 +73,12 @@ const AddressItem = ({ name_tag, address }: IAddress) => {
   });
 
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={handleSelectAddress}>
       <Image source={require("../../images/map.png")} style={styles.image} />
       <View style={styles.details}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>{name_tag}</Text>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.navigate("Address")}
-          >
+          <TouchableOpacity style={styles.button} onPress={handleRemoveAddress}>
             <Material name="delete-outline" size={22} color={colors.orange} />
           </TouchableOpacity>
         </View>

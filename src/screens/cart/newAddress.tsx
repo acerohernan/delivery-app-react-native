@@ -3,22 +3,18 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Image,
   Dimensions,
-  TextInput,
 } from "react-native";
 import React, { useState } from "react";
-import Material from "react-native-vector-icons/MaterialCommunityIcons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
-import Header from "../../components/header";
 import { colors } from "../../styles";
 import { useAppDispatch } from "../../redux";
-import { changePaymentMethod } from "../../redux/reducers/cart";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { DashboardStackParamsList } from "../../types/navigation";
 import { createAddress } from "../../redux/reducers/address";
+import Header from "../../components/header";
 import Input from "../../components/input";
 
 /* Variables */

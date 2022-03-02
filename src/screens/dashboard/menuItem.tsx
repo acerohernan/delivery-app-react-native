@@ -32,7 +32,7 @@ export default function MenuItemScreen() {
 
   const { params } =
     useRoute<RouteProp<DashboardStackParamsList, "MenuItem">>();
-  const { title, image, description, price } = params;
+  const { title, image, description, price, restaurantName } = params;
   const { items } = useAppSelector((state) => state.cart);
 
   const itemInCart = items.find((item) => item.title === title);
@@ -42,11 +42,11 @@ export default function MenuItemScreen() {
   };
 
   const handleAddToCart = () => {
-    dispatch(addItem({ title, image, description, price }));
+    dispatch(addItem({ title, image, description, price, restaurantName }));
   };
 
   const handleRemoveToCart = () => {
-    dispatch(removeItem({ title, image, description, price }));
+    dispatch(removeItem({ title, image, description, price, restaurantName }));
   };
 
   return (

@@ -29,6 +29,7 @@ export type DashboardStackParamsList = {
     description: string;
     price: string;
     image: string;
+    restaurantName: string;
   };
   Cart: undefined;
   Checkout: undefined;

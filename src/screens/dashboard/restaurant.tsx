@@ -76,7 +76,10 @@ export default function RestaurantScreen() {
               changeCategory={handleChangeMenuCategory}
               selectedCategory={menuCategory}
             />
-            <RestaurantMenu selectedCategory={menuCategory} />
+            <RestaurantMenu
+              selectedCategory={menuCategory}
+              restaurantName={name}
+            />
           </ScrollView>
         </View>
       </View>

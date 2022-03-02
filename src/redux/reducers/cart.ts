@@ -11,6 +11,7 @@ const initialState: CartState = {
 /* Reducers */
 const addItemReducer = (state: CartState, { payload }: MenuItemAction) => {
   state.orderCreated = false;
+  state.restaurant = payload.restaurantName;
 
   const isHere = state.items.find((item) => item.title === payload.title);
 
@@ -30,6 +31,7 @@ const addItemReducer = (state: CartState, { payload }: MenuItemAction) => {
 
 const removeItemReducer = (state: CartState, { payload }: MenuItemAction) => {
   state.orderCreated = false;
+  state.restaurant = payload.restaurantName;
 
   const isHere = state.items.find((item) => item.title === payload.title);
   const filteredItems = state.items.filter(

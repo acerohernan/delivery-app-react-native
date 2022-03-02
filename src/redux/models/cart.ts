@@ -11,6 +11,7 @@ export interface IMenuItem {
   price: string;
   image: string;
   quantity?: number;
+  restaurantName: string;
 }
 
 export interface MenuItemAction {

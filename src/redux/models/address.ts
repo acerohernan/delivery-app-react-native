@@ -1,5 +1,6 @@
 export interface AddressState {
   items: Array<IAddress>;
+  selectedAddress: IAddress;
 }
 
 export interface IAddress {

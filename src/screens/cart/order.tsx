@@ -15,6 +15,8 @@ import Material from "react-native-vector-icons/MaterialCommunityIcons";
 import Header from "../../components/header";
 import CartItems from "../../components/cart/items";
 import CartSubtotal from "../../components/cart/subtotal";
+import CartUbication from "../../components/cart/ubication";
+import { useAppSelector } from "../../redux";
 
 /* Variables */
 const screenHeight = Dimensions.get("screen").height;
@@ -319,6 +321,8 @@ const RoadMap = () => {
 };
 
 export default function OrderScreen() {
+  const { restaurant } = useAppSelector((state) => state.cart);
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
@@ -326,12 +330,14 @@ export default function OrderScreen() {
       <View style={styles.body}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <RoadMap />
+          <CartUbication />
           <View style={styles.itemContainer}>
             <View style={styles.itemTitleContainer}>
               <Text style={styles.itemTitle}>Order From</Text>
-              <Text style={styles.itemRestaurant}>McDonald'S</Text>
+              <Text style={styles.itemRestaurant}>{restaurant}</Text>
             </View>
           </View>
+
           <CartItems checkout />
           <CartSubtotal order />
         </ScrollView>

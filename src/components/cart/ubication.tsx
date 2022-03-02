@@ -11,6 +11,7 @@ import { colors } from "../../styles";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { DashboardStackParamsList } from "../../types/navigation";
+import { useAppSelector } from "../../redux";
 
 /* Variables */
 const screenWidth = Dimensions.get("screen").width;
@@ -19,12 +20,15 @@ export default function CartUbication() {
   const navigation =
     useNavigation<NativeStackNavigationProp<DashboardStackParamsList>>();
 
+  const { selectedAddress } = useAppSelector((state) => state.address);
+  const { name_tag, address } = selectedAddress;
+
   return (
     <View style={styles.container}>
       <Image source={require("../../images/map.png")} style={styles.image} />
       <View style={styles.details}>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Deliver to: Home</Text>
+          <Text style={styles.title}>Deliver to: {name_tag}</Text>
           <TouchableOpacity
             style={styles.button}
             onPress={() => navigation.navigate("Address")}
@@ -32,7 +36,7 @@ export default function CartUbication() {
             <Text style={styles.buttonText}>Change</Text>
           </TouchableOpacity>
         </View>
-        <Text style={styles.text}>13A Havinr Street, New York</Text>
+        <Text style={styles.text}>{address}</Text>
       </View>
     </View>
   );
