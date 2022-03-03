@@ -19,7 +19,7 @@ const reducer = combineReducers({
 const persitConfig = {
   key: "root",
   storage: AsyncStorage,
-  whitelist: ["user"],
+  whitelist: [],
 };
 
 const persitedReducer = persistReducer(persitConfig, reducer);

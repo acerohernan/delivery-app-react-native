@@ -179,7 +179,7 @@ export default function LoginScreen() {
           </View>
           <Button
             title="Sign In"
-            onPress={() => navigationRoot.navigate("Home")}
+            onPress={() => navigationRoot.navigate("DashboardStack")}
           />
         </KeyboardAvoidingView>
         <View style={styles.goSignup}>

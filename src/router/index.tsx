@@ -7,19 +7,26 @@ import OnboardScreen from "../screens/onboard";
 
 import AuthStackComponent from "./auth";
 import DashboardStackComponent from "./dashboard";
+import { useAppSelector } from "../redux";
 
 const RootStack = createNativeStackNavigator<RootStackParamsList>();
 
 export default function RootStackComponent() {
+  const { isLogin } = useAppSelector((state) => state.user);
+
   return (
     <NavigationContainer>
       <RootStack.Navigator screenOptions={{ headerShown: false }}>
-        <RootStack.Screen
-          name="DashboardStack"
-          component={DashboardStackComponent}
-        />
+        {isLogin && (
+          <RootStack.Screen
+            name="DashboardStack"
+            component={DashboardStackComponent}
+          />
+        )}
+        {!isLogin && (
+          <RootStack.Screen name="AuthStack" component={AuthStackComponent} />
+        )}
         <RootStack.Screen name="Onboard" component={OnboardScreen} />
-        <RootStack.Screen name="AuthStack" component={AuthStackComponent} />
       </RootStack.Navigator>
     </NavigationContainer>
   );

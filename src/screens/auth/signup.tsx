@@ -1,4 +1,5 @@
 import {
+  Alert,
   Dimensions,
   KeyboardAvoidingView,
   StyleSheet,
@@ -11,10 +12,7 @@ import {
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import {
-  AuthStackParamsList,
-  RootStackParamsList,
-} from "../../types/navigation";
+import { AuthStackParamsList } from "../../types/navigation";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { colors } from "../../styles";
@@ -22,51 +20,12 @@ import { colors } from "../../styles";
 import Material from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Button from "../../components/button";
+import { useAppDispatch } from "../../redux";
+import { signUp } from "../../redux/reducers/user";
 
 /* Variables */
 
 const screenHeight = Dimensions.get("screen").height;
-
-/* Components */
-
-//Input
-
-interface InputProps {
-  placeholder: string;
-  iconName: string;
-}
-
-const Input = ({ placeholder = "", iconName }: InputProps) => {
-  const styles = StyleSheet.create({
-    container: {
-      marginTop: 15,
-    },
-    input: {
-      backgroundColor: colors.gray,
-      height: 55,
-      borderRadius: 10,
-      paddingLeft: 50,
-      color: "gray",
-      fontSize: 15,
-      borderColor: "#C2C2CB",
-      borderWidth: 2,
-    },
-    inputIcon: {
-      position: "absolute",
-      top: 15,
-      left: 15,
-      textAlign: "center",
-      color: "gray",
-    },
-  });
-
-  return (
-    <View style={styles.container}>
-      <TextInput placeholder={placeholder} style={styles.input} />
-      <Material name={iconName} style={styles.inputIcon} size={25} />
-    </View>
-  );
-};
 
 //Social Media Button
 
@@ -101,9 +60,72 @@ const SocialButton = ({ bgColor, title }: SocialButtonProps) => {
 
 //Main
 
+interface FormValues {
+  username: string;
+  email: string;
+  password: string;
+}
+
 export default function SignUpScreen() {
+  const [errors, setErrors] = useState({
+    username: false,
+    email: false,
+    password: false,
+  });
+  const [inputValues, setInputValues] = useState<FormValues>({
+    username: "",
+    email: "",
+    password: "",
+  });
+
+  const { username, email, password } = inputValues;
+
   const navigation =
     useNavigation<NativeStackNavigationProp<AuthStackParamsList>>();
+  const dispatch = useAppDispatch();
+
+  const emailRegex =
+    /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+  const passwordRexeg = /[!@#$%ˆ&*]/;
+
+  /* Input Validations */
+  const username_validation = username.length <= 15;
+  const email_validation = emailRegex.test(email);
+  const password_validation =
+    passwordRexeg.test(password) && password.length > 5;
+
+  const handleInputValue = (text: string, name: string) => {
+    setInputValues({
+      ...inputValues,
+      [name]: text,
+    });
+  };
+
+  const handleInputValidation = (name: string, validation: boolean) => {
+    return () => {
+      if (!validation) setErrors({ ...errors, [name]: true });
+      if (validation) setErrors({ ...errors, [name]: false });
+    };
+  };
+
+  const handleCreaterAccount = () => {
+    if (!inputValues.email || !inputValues.password || !inputValues.username)
+      return Alert.alert("Please complete the input fields.");
+
+    if (!username_validation || !email_validation || !password_validation) {
+      return Alert.alert("Please enter the correct information.");
+    }
+    if (
+      !errors.username &&
+      !errors.password &&
+      !errors.email &&
+      username_validation &&
+      email_validation &&
+      password_validation
+    ) {
+      dispatch(signUp({ username, email }));
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -126,11 +148,78 @@ export default function SignUpScreen() {
         </TouchableOpacity>
         <KeyboardAvoidingView>
           <View style={{ marginBottom: 30 }}>
-            <Input placeholder="Username" iconName="account-outline" />
-            <Input placeholder="Email " iconName="email-outline" />
-            <Input placeholder="Password" iconName="lock-outline" />
+            <View style={styles.inputContainer}>
+              <TextInput
+                placeholder="Username"
+                style={styles.input}
+                onChangeText={(text) =>
+                  handleInputValue(
+                    text.toLocaleLowerCase().split(" ").join(""),
+                    "username"
+                  )
+                }
+                onEndEditing={handleInputValidation(
+                  "username",
+                  username_validation
+                )}
+              />
+              <Material
+                name="account-outline"
+                style={styles.inputIcon}
+                size={25}
+              />
+            </View>
+            {errors.username && (
+              <Text style={styles.error}>
+                Please enter a valid username. (Max 15 characters)
+              </Text>
+            )}
+            <View style={styles.inputContainer}>
+              <TextInput
+                placeholder="Email"
+                style={styles.input}
+                autoCompleteType="email"
+                keyboardType="email-address"
+                onChangeText={(text) =>
+                  handleInputValue(text.toLowerCase(), "email")
+                }
+                onEndEditing={handleInputValidation("email", email_validation)}
+              />
+              <Material
+                name="email-outline"
+                style={styles.inputIcon}
+                size={25}
+              />
+            </View>
+            {errors.email && (
+              <Text style={styles.error}>Please enter a valid email</Text>
+            )}
+            <View style={styles.inputContainer}>
+              <TextInput
+                placeholder="Password"
+                style={styles.input}
+                onChangeText={(text) => handleInputValue(text, "password")}
+                secureTextEntry={true}
+                autoCompleteType="password"
+                onEndEditing={handleInputValidation(
+                  "password",
+                  password_validation
+                )}
+              />
+              <Material
+                name="lock-outline"
+                style={styles.inputIcon}
+                size={25}
+              />
+            </View>
+            {errors.password && (
+              <Text style={styles.error}>
+                Please enter a valid password. (Mininum 6 characters and one
+                special character !@#$%ˆ&*)
+              </Text>
+            )}
           </View>
-          <Button title="Create an account" onPress={() => console.log("Hi")} />
+          <Button title="Create an account" onPress={handleCreaterAccount} />
         </KeyboardAvoidingView>
       </View>
       <View style={styles.footer}>
@@ -196,7 +285,30 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginVertical: 20,
   },
+  inputContainer: {
+    marginTop: 15,
+  },
+  input: {
+    backgroundColor: colors.gray,
+    height: 55,
+    borderRadius: 10,
+    paddingLeft: 50,
+    color: "gray",
+    fontSize: 15,
+    borderColor: "#C2C2CB",
+    borderWidth: 2,
+  },
+  inputIcon: {
+    position: "absolute",
+    top: 15,
+    left: 15,
+    textAlign: "center",
+    color: "gray",
+  },
   footer: {
     backgroundColor: "white",
+  },
+  error: {
+    color: "red",
   },
 });

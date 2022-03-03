@@ -16,11 +16,14 @@ import { colors } from "../../styles";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { DashboardStackParamsList } from "../../types/navigation";
+import { useAppSelector } from "../../redux";
 
 /* Variables */
 const screenHeight = Dimensions.get("screen").height;
 
 export default function ProfileScreen() {
+  const { username } = useAppSelector((state) => state.user);
+
   const navigation =
     useNavigation<NativeStackNavigationProp<DashboardStackParamsList>>();
 
@@ -37,7 +40,7 @@ export default function ProfileScreen() {
             style={styles.imageButton}
           />
         </TouchableOpacity>
-        <Text style={styles.username}>@username</Text>
+        <Text style={styles.username}>@{username}</Text>
         <View style={styles.options}>
           <TouchableOpacity
             style={styles.optionItem}

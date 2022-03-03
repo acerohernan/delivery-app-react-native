@@ -1,28 +1,35 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-
-interface UserState {
-  token: string;
-  email: string;
-  first_name: string;
-  last_name: string;
-}
+import { UserState } from "../models/user";
 
 const initialState: UserState = {
-  token: "",
+  status: "",
+  username: "",
   email: "",
-  first_name: "",
-  last_name: "",
+  isLogin: false,
+};
+
+/* Reducers */
+interface SignUpAction {
+  payload: {
+    username: string;
+    email: string;
+  };
+}
+
+const signUpReducer = (state: UserState, { payload }: SignUpAction) => {
+  const { username, email } = payload;
+  state.username = username;
+  state.email = email;
+  state.isLogin = true;
 };
 
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    changeName: (state, { payload }) => {
-      state.first_name = payload;
-    },
+    signUp: signUpReducer,
   },
 });
 
-export const { changeName } = userSlice.actions;
+export const { signUp } = userSlice.actions;
 export default userSlice.reducer;
