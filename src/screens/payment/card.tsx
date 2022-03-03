@@ -38,7 +38,6 @@ interface FormValues {
 
 //Main
 export default function CreditCardScreen() {
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [errors, setErrors] = useState({
     card_holder: false,
     card_number: false,
@@ -46,7 +45,7 @@ export default function CreditCardScreen() {
     year_exp: false,
     cvc: false,
   });
-  const [inputValues, setInputValues] = useState({
+  const [inputValues, setInputValues] = useState<FormValues>({
     card_holder: "",
     card_number: "",
     month_exp: "",
@@ -86,7 +85,6 @@ export default function CreditCardScreen() {
       !errors.year_exp &&
       !errors.cvc
     ) {
-      setIsSubmitted(true);
       dispatch(changePaymentMethod("card"));
       navigation.navigate("Checkout");
     }
