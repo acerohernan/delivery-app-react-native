@@ -8,6 +8,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   ScrollView,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -57,16 +58,9 @@ export default function CreditCardScreen() {
   const navigation =
     useNavigation<NativeStackNavigationProp<DashboardStackParamsList>>();
 
-  const { card_holder, card_number } = inputValues;
+  const { card_holder, card_number, month_exp, year_exp, cvc } = inputValues;
 
-  const handleInputValue = (
-    name: string,
-    text: string,
-    error: boolean = true
-  ) => {
-    /* if (error) setErrors({ ...errors, [name]: true });
-    if (!error) setErrors({ ...errors, [name]: false }); */
-
+  const handleInputValue = (name: string, text: string) => {
     setInputValues({
       ...inputValues,
       [name]: text,
@@ -81,6 +75,10 @@ export default function CreditCardScreen() {
   };
 
   const handleSelectCard = () => {
+    if (!card_holder || !card_number || !month_exp || !year_exp || !cvc) {
+      return Alert.alert("Please complete the input fields.");
+    }
+
     if (
       !errors.card_holder &&
       !errors.card_number &&
@@ -93,12 +91,17 @@ export default function CreditCardScreen() {
       navigation.navigate("Checkout");
     }
 
-    return console.log("error input");
+    return;
   };
 
   /* Input validation */
-  const card_holder_error = !/^[a-zA-Z]+$/.test(card_holder);
-  const card_number_error = card_number.length !== 15;
+  const card_holder_error = !/^[a-zA-Z]+$/.test(
+    card_holder.replaceAll(" ", "")
+  );
+  const card_number_error = card_number.length !== 16;
+  const month_exp_error = month_exp.length !== 2;
+  const year_exp_error = year_exp.length !== 2;
+  const cvc_error = cvc.length !== 3;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -130,12 +133,14 @@ export default function CreditCardScreen() {
               <Input
                 iconName="credit-card-outline"
                 placeholder="Card Number"
-                onChangeText={(name, text) =>
-                  handleInputValue(name, text, card_number_error)
-                }
+                onChangeText={(name, text) => handleInputValue(name, text)}
                 name="card_number"
                 maxLength={16}
                 numeric
+                onEndEditing={handleInputValidation(
+                  "card_number",
+                  card_number_error
+                )}
               />
               {errors.card_number && (
                 <Text style={styles.error}>
@@ -154,6 +159,10 @@ export default function CreditCardScreen() {
                       onChangeText={(text) =>
                         handleInputValue("month_exp", text)
                       }
+                      onEndEditing={handleInputValidation(
+                        "month_exp",
+                        month_exp_error
+                      )}
                     />
                     <Text style={{ marginRight: 10, fontSize: 26 }}>/</Text>
                     <TextInput
@@ -164,6 +173,10 @@ export default function CreditCardScreen() {
                       onChangeText={(text) =>
                         handleInputValue("year_exp", text)
                       }
+                      onEndEditing={handleInputValidation(
+                        "year_exp",
+                        year_exp_error
+                      )}
                     />
                   </View>
                 </View>
@@ -175,6 +188,7 @@ export default function CreditCardScreen() {
                       maxLength={3}
                       keyboardType="numeric"
                       onChangeText={(text) => handleInputValue("cvc", text)}
+                      onEndEditing={handleInputValidation("cvc", cvc_error)}
                     />
                   </View>
                 </View>
@@ -188,11 +202,16 @@ export default function CreditCardScreen() {
               >
                 {(errors.month_exp || errors.year_exp) && (
                   <Text style={styles.error}>
-                    Please enter your expiration date
+                    Please enter a valid expiration date
                   </Text>
                 )}
                 {errors.cvc && (
-                  <Text style={styles.error}>Please enter your CVC</Text>
+                  <>
+                    <View style={{ width: 10, height: 10 }} />
+                    <Text style={styles.errorCvc}>
+                      Please enter a valid CVC
+                    </Text>
+                  </>
                 )}
               </View>
             </KeyboardAvoidingView>
@@ -288,6 +307,11 @@ const styles = StyleSheet.create({
 
   error: {
     color: "red",
+  },
+
+  errorCvc: {
+    color: "red",
+    width: 90,
   },
 
   footer: {
