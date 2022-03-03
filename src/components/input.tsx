@@ -13,6 +13,7 @@ interface InputProps {
   maxLength?: number;
   name: string;
   numeric?: boolean;
+  onEndEditing?: () => void;
 }
 
 export default function Input({
@@ -23,6 +24,7 @@ export default function Input({
   name,
   maxLength,
   numeric,
+  onEndEditing,
 }: InputProps) {
   return (
     <View style={styles.container}>
@@ -34,6 +36,7 @@ export default function Input({
         key="name_tag"
         maxLength={maxLength ? maxLength : 99}
         keyboardType={numeric ? "numeric" : "default"}
+        onEndEditing={onEndEditing ? onEndEditing : () => true}
       />
       <Material name={iconName} style={styles.inputIcon} size={25} />
     </View>
