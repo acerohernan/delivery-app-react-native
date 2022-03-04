@@ -94,7 +94,7 @@ export default function CreditCardScreen() {
 
   /* Input validation */
   const card_holder_error = !/^[a-zA-Z]+$/.test(
-    card_holder.replaceAll(" ", "")
+    card_holder.split(" ").join("")
   );
   const card_number_error = card_number.length !== 16;
   const month_exp_error = month_exp.length !== 2;

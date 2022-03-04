@@ -19,6 +19,9 @@ import { useAppDispatch, useAppSelector } from "../../redux";
 import { getRestaurants } from "../../redux/reducers/restaurant";
 import { IRestaurant } from "../../redux/models";
 import { useRestaurantCategories } from "../../utils/useRestaurantCat";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { DashboardStackParamsList } from "../../types/navigation";
 
 export default function HomeScreen() {
   const [category, setCategory] = useState("");
@@ -27,7 +30,12 @@ export default function HomeScreen() {
   );
 
   const { items } = useAppSelector((state) => state.restaurant);
+  const { items: addressItems, selectedAddress } = useAppSelector(
+    (state) => state.address
+  );
   const dispatch = useAppDispatch();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<DashboardStackParamsList>>();
 
   const handleChangeCategory = (categoryName: string) => {
     if (category === categoryName) return setCategory("");
@@ -55,8 +63,25 @@ export default function HomeScreen() {
       <View style={styles.addressContainer}>
         <TouchableOpacity style={styles.addressButton}>
           <Material name="map-marker-outline" size={22} color="white" />
-          <Text style={styles.addressText}>Delivery to</Text>
-          <Text style={styles.addressTitle}>HOME</Text>
+          {addressItems && selectedAddress.name_tag ? (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Address")}
+              style={{ flexDirection: "row" }}
+            >
+              <Text style={styles.addressText}>Delivery to</Text>
+              <Text style={styles.addressTitle}>HOME</Text>
+            </TouchableOpacity>
+          ) : null}
+
+          {!addressItems || !selectedAddress.name_tag ? (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Address")}
+              style={{ flexDirection: "row" }}
+            >
+              <Text style={styles.addressText}>Please add an</Text>
+              <Text style={styles.addressTitle}>Address</Text>
+            </TouchableOpacity>
+          ) : null}
         </TouchableOpacity>
         <TouchableOpacity>
           <Material name="bell-outline" size={27} color="white" />
@@ -111,8 +136,8 @@ const styles = StyleSheet.create({
   },
 
   addressButton: {
-    width: 150,
     flexDirection: "row",
+    alignItems: "center",
   },
 
   addressText: {

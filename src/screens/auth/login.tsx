@@ -1,4 +1,5 @@
 import {
+  Alert,
   Dimensions,
   KeyboardAvoidingView,
   StyleSheet,
@@ -21,51 +22,13 @@ import { colors } from "../../styles";
 
 import Material from "react-native-vector-icons/MaterialCommunityIcons";
 import Button from "../../components/button";
+import { emailRegex, passwordRexeg } from "../../utils/regex";
 
 /* Variables */
 
 const screenHeight = Dimensions.get("screen").height;
 
 /* Components */
-
-//Input
-
-interface InputProps {
-  placeholder: string;
-  iconName: string;
-}
-
-const Input = ({ placeholder = "", iconName }: InputProps) => {
-  const styles = StyleSheet.create({
-    container: {
-      marginTop: 15,
-    },
-    input: {
-      backgroundColor: colors.gray,
-      height: 55,
-      borderRadius: 10,
-      paddingLeft: 50,
-      color: "gray",
-      fontSize: 15,
-      borderColor: "#C2C2CB",
-      borderWidth: 2,
-    },
-    inputIcon: {
-      position: "absolute",
-      top: 15,
-      left: 15,
-      textAlign: "center",
-      color: "gray",
-    },
-  });
-
-  return (
-    <View style={styles.container}>
-      <TextInput placeholder={placeholder} style={styles.input} />
-      <Material name={iconName} style={styles.inputIcon} size={25} />
-    </View>
-  );
-};
 
 //Checkbox
 
@@ -144,13 +107,57 @@ const SocialButton = ({ bgColor, title }: SocialButtonProps) => {
 
 //Main
 
+interface FormValues {
+  email: string;
+  password: string;
+}
+
 export default function LoginScreen() {
   const [remember, setRemember] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [inputValues, setInputValues] = useState<FormValues>({
+    email: "",
+    password: "",
+  });
+  const [errors, setErrors] = useState({
+    email: false,
+    password: false,
+  });
+
+  const { email, password } = inputValues;
 
   const navigation =
     useNavigation<NativeStackNavigationProp<AuthStackParamsList>>();
   const navigationRoot =
     useNavigation<NativeStackNavigationProp<RootStackParamsList>>();
+
+  const email_validation = emailRegex.test(email);
+  const password_validation = passwordRexeg.test(password);
+
+  const handleSignIn = () => {
+    if (!email || !password) return Alert.alert("Please complete the fields.");
+
+    if (errors.email || errors.password)
+      return Alert.alert("Please correct the information.");
+
+    if (
+      !errors.email &&
+      !errors.password &&
+      email_validation &&
+      password_validation
+    ) {
+      setIsSubmitted(true);
+    }
+  };
+
+  const handleInputValue = (name: string) => (text: string) => {
+    setInputValues({ ...inputValues, [name]: text });
+  };
+
+  const handleInputValidation = (name: string, validation: boolean) => () => {
+    if (validation) setErrors({ ...errors, [name]: false });
+    if (!validation) setErrors({ ...errors, [name]: true });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -161,8 +168,46 @@ export default function LoginScreen() {
           Enter your Phone number or Email address for sign it. Enyoi your food.
         </Text>
         <KeyboardAvoidingView>
-          <Input placeholder="Username" iconName="account-outline" />
-          <Input placeholder="Password" iconName="lock-outline" />
+          <View style={styles.inputContainer}>
+            <TextInput
+              value={email}
+              placeholder="Email"
+              style={styles.input}
+              keyboardType="email-address"
+              autoCompleteType="email"
+              onChangeText={handleInputValue("email")}
+              onEndEditing={handleInputValidation("email", email_validation)}
+            />
+            <Material
+              name="account-outline"
+              style={styles.inputIcon}
+              size={25}
+            />
+          </View>
+          {errors.email && (
+            <Text style={{ color: "red" }}>Please enter a valid email</Text>
+          )}
+          <View style={styles.inputContainer}>
+            <TextInput
+              value={password}
+              placeholder="Password"
+              style={styles.input}
+              secureTextEntry={true}
+              autoCompleteType="password"
+              onChangeText={handleInputValue("password")}
+              onEndEditing={handleInputValidation(
+                "password",
+                password_validation
+              )}
+            />
+            <Material name="lock-outline" style={styles.inputIcon} size={25} />
+          </View>
+          {errors.password && (
+            <Text style={{ color: "red" }}>
+              Password must have more than 6 characters and one special
+              character (!@#$%ˆ&*).
+            </Text>
+          )}
           <View style={styles.rememberContainer}>
             <CheckBox
               checked={remember}
@@ -177,13 +222,15 @@ export default function LoginScreen() {
               </Text>
             </TouchableOpacity>
           </View>
-          <Button
-            title="Sign In"
-            onPress={() => navigationRoot.navigate("DashboardStack")}
-          />
+          <Button title="Sign In" onPress={handleSignIn} />
         </KeyboardAvoidingView>
+        {isSubmitted && (
+          <Text style={{ color: "red" }}>
+            The email or password are incorrect. Please create an account.
+          </Text>
+        )}
         <View style={styles.goSignup}>
-          <Text>Dont have an account? </Text>
+          <Text>Don't have an account? </Text>
           <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
             <Text style={styles.link}>Signup</Text>
           </TouchableOpacity>
@@ -243,5 +290,25 @@ const styles = StyleSheet.create({
   },
   footer: {
     backgroundColor: "white",
+  },
+  inputContainer: {
+    marginTop: 15,
+  },
+  input: {
+    backgroundColor: colors.gray,
+    height: 55,
+    borderRadius: 10,
+    paddingLeft: 50,
+    color: "gray",
+    fontSize: 15,
+    borderColor: "#C2C2CB",
+    borderWidth: 2,
+  },
+  inputIcon: {
+    position: "absolute",
+    top: 15,
+    left: 15,
+    textAlign: "center",
+    color: "gray",
   },
 });

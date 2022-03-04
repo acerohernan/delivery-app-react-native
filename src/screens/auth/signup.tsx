@@ -22,6 +22,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Button from "../../components/button";
 import { useAppDispatch } from "../../redux";
 import { signUp } from "../../redux/reducers/user";
+import { emailRegex, passwordRexeg } from "../../utils/regex";
 
 /* Variables */
 
@@ -83,10 +84,6 @@ export default function SignUpScreen() {
   const navigation =
     useNavigation<NativeStackNavigationProp<AuthStackParamsList>>();
   const dispatch = useAppDispatch();
-
-  const emailRegex =
-    /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-  const passwordRexeg = /[!@#$%ˆ&*]/;
 
   /* Input Validations */
   const username_validation = username.length <= 15;

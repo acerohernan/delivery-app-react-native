@@ -35,7 +35,7 @@ const AddressItem = ({ name_tag, address }: IAddress) => {
 
   const handleSelectAddress = () => {
     dispatch(selectAddress({ name_tag, address }));
-    navigation.navigate("Cart");
+    navigation.goBack();
   };
 
   const styles = StyleSheet.create({
