@@ -210,6 +210,8 @@ export default function Restaurants({ items }: RestaurantProps) {
 const styles = StyleSheet.create({
   container: {
     marginTop: 50,
+    paddingBottom: 70,
+    width: "100%",
   },
   sectionTitle: {
     fontWeight: "bold",

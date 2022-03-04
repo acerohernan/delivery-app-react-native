@@ -1,29 +1,31 @@
 import {
-  View,
-  Text,
+  Dimensions,
   StyleSheet,
+  Text,
   TextInput,
   TouchableOpacity,
+  View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
+import Material from "react-native-vector-icons/MaterialCommunityIcons";
 import { colors } from "../../styles";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Material from "react-native-vector-icons/MaterialCommunityIcons";
-import { StatusBar } from "expo-status-bar";
-
-import MainNav from "../../components/mainNav";
-import Categories from "../../components/home/categories";
 import Restaurants from "../../components/home/restaurants";
-
-import { useAppDispatch, useAppSelector } from "../../redux";
-import { getRestaurants } from "../../redux/reducers/restaurant";
 import { IRestaurant } from "../../redux/models";
-import { useRestaurantCategories } from "../../utils/useRestaurantCat";
+import { useAppDispatch, useAppSelector } from "../../redux";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { DashboardStackParamsList } from "../../types/navigation";
+import { getRestaurants } from "../../redux/reducers/restaurant";
+import { useRestaurantCategories } from "../../utils/useRestaurantCat";
+import { StatusBar } from "expo-status-bar";
+import MainNav from "../../components/mainNav";
+import Categories from "../../components/home/categories";
 
-export default function HomeScreen() {
+/* Variables */
+const screenHeight = Dimensions.get("screen").height;
+
+export default function HomeScreen2() {
   const [category, setCategory] = useState("");
   const [itemsByCategory, setItemsByCategory] = useState<Array<IRestaurant>>(
     []
@@ -56,61 +58,63 @@ export default function HomeScreen() {
   }, [category, items]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView>
       <StatusBar style="auto" />
       <MainNav />
       <View style={styles.circle} />
-      <View style={styles.addressContainer}>
-        <TouchableOpacity style={styles.addressButton}>
-          <Material name="map-marker-outline" size={22} color="white" />
-          {addressItems && selectedAddress.name_tag ? (
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Address")}
-              style={{ flexDirection: "row" }}
-            >
-              <Text style={styles.addressText}>Delivery to</Text>
-              <Text style={styles.addressTitle}>HOME</Text>
-            </TouchableOpacity>
-          ) : null}
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <View style={styles.addressContainer}>
+            <TouchableOpacity style={styles.addressButton}>
+              <Material name="map-marker-outline" size={22} color="white" />
+              {addressItems && selectedAddress.name_tag ? (
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("Address")}
+                  style={{ flexDirection: "row" }}
+                >
+                  <Text style={styles.addressText}>Delivery to</Text>
+                  <Text style={styles.addressTitle}>HOME</Text>
+                </TouchableOpacity>
+              ) : null}
 
-          {!addressItems || !selectedAddress.name_tag ? (
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Address")}
-              style={{ flexDirection: "row" }}
-            >
-              <Text style={styles.addressText}>Please add an</Text>
-              <Text style={styles.addressTitle}>Address</Text>
+              {!addressItems || !selectedAddress.name_tag ? (
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("Address")}
+                  style={{ flexDirection: "row" }}
+                >
+                  <Text style={styles.addressText}>Please add an</Text>
+                  <Text style={styles.addressTitle}>Address</Text>
+                </TouchableOpacity>
+              ) : null}
             </TouchableOpacity>
-          ) : null}
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Material name="bell-outline" size={27} color="white" />
-        </TouchableOpacity>
+            <TouchableOpacity>
+              <Material name="bell-outline" size={27} color="white" />
+            </TouchableOpacity>
+          </View>
+          <View style={{ marginTop: 20 }}>
+            <TextInput placeholder="Search.." style={styles.input} />
+            <Material
+              name="magnify"
+              size={30}
+              color="gray"
+              style={styles.inputIcon}
+            />
+          </View>
+          <Categories
+            changeCategory={handleChangeCategory}
+            categorySelected={category}
+          />
+        </View>
+        <View style={styles.body}>
+          <Restaurants items={category ? itemsByCategory : items} />
+        </View>
       </View>
-      <View style={{ marginTop: 20 }}>
-        <TextInput placeholder="Search.." style={styles.input} />
-        <Material
-          name="magnify"
-          size={30}
-          color="gray"
-          style={styles.inputIcon}
-        />
-      </View>
-      <Categories
-        changeCategory={handleChangeCategory}
-        categorySelected={category}
-      />
-      <Restaurants items={category ? itemsByCategory : items} />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-    padding: 15,
-  },
+  container: {},
   circle: {
     width: 1400,
     height: 1400,
@@ -120,13 +124,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.green,
     borderRadius: 1400 / 2,
   },
-  navigation: {
-    backgroundColor: "red",
+  header: {
+    paddingTop: 10,
+    height: 200,
+    paddingHorizontal: 20,
   },
   body: {
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "yellow",
+    height: screenHeight - 280,
+    paddingHorizontal: 20,
   },
 
   addressContainer: {
