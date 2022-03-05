@@ -37,10 +37,13 @@ export default function CartScreen() {
     useNavigation<NativeStackNavigationProp<DashboardStackParamsList>>();
 
   const { items } = useAppSelector((state) => state.cart);
-  const { items: addressItems } = useAppSelector((state) => state.address);
+  const { items: addressItems, selectedAddress } = useAppSelector(
+    (state) => state.address
+  );
 
   const handleGoToCheckout = () => {
-    if (addressItems.length === 0) return Alert.alert("Please add an address");
+    if (addressItems.length === 0 || !selectedAddress.name_tag)
+      return Alert.alert("Please add an address");
 
     navigation.navigate("Checkout");
   };

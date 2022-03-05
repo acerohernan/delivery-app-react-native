@@ -118,7 +118,10 @@ export default function CheckoutScreen() {
         <StatusBar style="auto" />
         <CheckoutModal
           isOpen={modalIsOpen}
-          closeModal={() => setModalIsOpen(false)}
+          closeModal={() => {
+            setModalIsOpen(false);
+            navigation.navigate("Order");
+          }}
           openModal={() => setModalIsOpen(true)}
         />
         <Header title="Checkout" />

@@ -23,17 +23,17 @@ export default function CartUbication() {
   const { selectedAddress, items } = useAppSelector((state) => state.address);
   const { name_tag, address } = selectedAddress;
 
-  const noAddress = items.length === 0;
+  const noAddress = items.length < 1;
 
   return (
     <View style={styles.container}>
       <Image source={require("../../images/map.png")} style={styles.image} />
       <View style={styles.details}>
         <View style={styles.titleContainer}>
-          {!noAddress && (
+          {Boolean(selectedAddress.name_tag) && (
             <Text style={styles.title}>Deliver to: {name_tag}</Text>
           )}
-          {noAddress && !selectedAddress.name_tag && (
+          {(noAddress || !name_tag) && (
             <Text style={styles.text}>Please add an address</Text>
           )}
           <TouchableOpacity
@@ -45,7 +45,7 @@ export default function CartUbication() {
             </Text>
           </TouchableOpacity>
         </View>
-        {!noAddress && <Text style={styles.text}>{address}</Text>}
+        {Boolean(name_tag) && <Text style={styles.text}>{address}</Text>}
       </View>
     </View>
   );

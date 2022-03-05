@@ -29,6 +29,13 @@ const removeAddressReducer = (
   state: AddressState,
   { payload }: IAddressAction
 ) => {
+  if (payload.name_tag === state.selectedAddress.name_tag) {
+    state.selectedAddress = {
+      name_tag: "",
+      address: "",
+    };
+  }
+
   state.items = state.items.filter(
     (item) => item.name_tag !== payload.name_tag
   );
