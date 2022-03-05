@@ -6,6 +6,7 @@ const initialState: UserState = {
   username: "",
   email: "",
   isLogin: false,
+  showOnboard: true,
 };
 
 /* Reducers */
@@ -23,13 +24,18 @@ const signUpReducer = (state: UserState, { payload }: SignUpAction) => {
   state.isLogin = true;
 };
 
+const disabledOnboardReducer = (state: UserState) => {
+  state.showOnboard = false;
+};
+
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
     signUp: signUpReducer,
+    disabledOnboard: disabledOnboardReducer,
   },
 });
 
-export const { signUp } = userSlice.actions;
+export const { signUp, disabledOnboard } = userSlice.actions;
 export default userSlice.reducer;

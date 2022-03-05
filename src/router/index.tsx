@@ -12,11 +12,14 @@ import { useAppSelector } from "../redux";
 const RootStack = createNativeStackNavigator<RootStackParamsList>();
 
 export default function RootStackComponent() {
-  const { isLogin } = useAppSelector((state) => state.user);
+  const { isLogin, showOnboard } = useAppSelector((state) => state.user);
 
   return (
     <NavigationContainer>
       <RootStack.Navigator screenOptions={{ headerShown: false }}>
+        {showOnboard && (
+          <RootStack.Screen name="Onboard" component={OnboardScreen} />
+        )}
         {isLogin && (
           <RootStack.Screen
             name="DashboardStack"
@@ -26,7 +29,6 @@ export default function RootStackComponent() {
         {!isLogin && (
           <RootStack.Screen name="AuthStack" component={AuthStackComponent} />
         )}
-        <RootStack.Screen name="Onboard" component={OnboardScreen} />
       </RootStack.Navigator>
     </NavigationContainer>
   );

@@ -6,6 +6,8 @@ import { colors } from "../styles";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamsList } from "../types/navigation";
+import { useAppDispatch } from "../redux";
+import { disabledOnboard } from "../redux/reducers/user";
 
 /* Variables */
 
@@ -74,9 +76,10 @@ const Button = ({
 
 interface NavigationProps {
   actualScreen: number;
+  changeActualScreen: (screen: number) => void;
 }
 
-const Navigation = ({ actualScreen }: NavigationProps) => {
+const Navigation = ({ actualScreen, changeActualScreen }: NavigationProps) => {
   const styles = StyleSheet.create({
     container: {
       marginTop: 30,
@@ -102,10 +105,24 @@ const Navigation = ({ actualScreen }: NavigationProps) => {
     <View style={styles.container}>
       {screens.map((i, index) => {
         if (index === actualScreen) {
-          return <View style={styles.itemActive} key={index}></View>;
+          return (
+            <TouchableOpacity
+              key={index}
+              onPress={() => changeActualScreen(index)}
+            >
+              <View style={styles.itemActive}></View>
+            </TouchableOpacity>
+          );
         }
 
-        return <View style={styles.item} key={index}></View>;
+        return (
+          <TouchableOpacity
+            key={index}
+            onPress={() => changeActualScreen(index)}
+          >
+            <View style={styles.item}></View>
+          </TouchableOpacity>
+        );
       })}
     </View>
   );
@@ -120,18 +137,38 @@ export default function OnboardScreen() {
 
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamsList>>();
+  const dispatch = useAppDispatch();
 
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
       <View style={styles.body}>
-        <Image
-          source={require("../images/restaurant.png")}
-          style={styles.image}
-        />
+        {screen === 0 && (
+          <Image
+            source={require(`../images/onboard/0.png`)}
+            style={styles.image}
+          />
+        )}
+
+        {screen === 1 && (
+          <Image
+            source={require(`../images/onboard/1.png`)}
+            style={styles.image}
+          />
+        )}
+
+        {screen === 2 && (
+          <Image
+            source={require(`../images/onboard/2.png`)}
+            style={styles.image}
+          />
+        )}
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.text}>{description}</Text>
-        <Navigation actualScreen={screen} />
+        <Navigation
+          actualScreen={screen}
+          changeActualScreen={(screen: number) => setScreen(screen)}
+        />
       </View>
       <View style={styles.footer}>
         {screen < 2 && (
@@ -154,7 +191,7 @@ export default function OnboardScreen() {
           <View style={styles.getStartedContainer}>
             <TouchableOpacity
               style={styles.getStartedButton}
-              onPress={() => navigation.navigate("AuthStack")}
+              onPress={() => dispatch(disabledOnboard())}
             >
               <Text style={styles.getStartedTitle}>Get Started</Text>
             </TouchableOpacity>
@@ -169,7 +206,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-    padding: 15,
+    padding: 20,
   },
   body: {
     flex: 9,
@@ -210,7 +247,7 @@ const styles = StyleSheet.create({
   },
   getStartedButton: {
     backgroundColor: colors.green,
-    width: 200,
+    width: "100%",
     height: 50,
     alignItems: "center",
     justifyContent: "center",

@@ -3,4 +3,5 @@ export interface UserState {
   username: string;
   email: string;
   isLogin: boolean;
+  showOnboard: boolean;
 }
