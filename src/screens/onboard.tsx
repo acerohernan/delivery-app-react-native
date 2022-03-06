@@ -247,8 +247,8 @@ const styles = StyleSheet.create({
   },
   getStartedButton: {
     backgroundColor: colors.green,
+    paddingVertical: 20,
     width: "100%",
-    height: 50,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 10,
@@ -257,6 +257,6 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     alignSelf: "center",
-    fontSize: 15,
+    fontSize: 16,
   },
 });

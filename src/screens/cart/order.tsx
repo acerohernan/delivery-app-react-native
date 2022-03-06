@@ -25,7 +25,7 @@ export default function OrderScreen() {
       <View style={styles.body}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <OrderRoadmap />
-          <CartUbication />
+          <CartUbication order />
           <View style={styles.itemContainer}>
             <View style={styles.itemTitleContainer}>
               <Text style={styles.itemTitle}>Order From</Text>

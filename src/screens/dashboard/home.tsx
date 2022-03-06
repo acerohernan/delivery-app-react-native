@@ -268,7 +268,6 @@ const styles = StyleSheet.create({
   notFoundText: {
     marginTop: 10,
     fontSize: 15,
-    width: 250,
     textAlign: "center",
   },
 });

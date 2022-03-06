@@ -16,7 +16,11 @@ import { useAppSelector } from "../../redux";
 /* Variables */
 const screenWidth = Dimensions.get("screen").width;
 
-export default function CartUbication() {
+interface UbicationProps {
+  order?: boolean;
+}
+
+export default function CartUbication({ order }: UbicationProps) {
   const navigation =
     useNavigation<NativeStackNavigationProp<DashboardStackParamsList>>();
 
@@ -36,14 +40,16 @@ export default function CartUbication() {
           {(noAddress || !name_tag) && (
             <Text style={styles.text}>Please add an address</Text>
           )}
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.navigate("Address")}
-          >
-            <Text style={styles.buttonText}>
-              {noAddress ? "Add" : "Change"}
-            </Text>
-          </TouchableOpacity>
+          {!order ? (
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigation.navigate("Address")}
+            >
+              <Text style={styles.buttonText}>
+                {!name_tag ? "Add" : "Change"}
+              </Text>
+            </TouchableOpacity>
+          ) : null}
         </View>
         {Boolean(name_tag) && <Text style={styles.text}>{address}</Text>}
       </View>
