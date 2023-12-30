@@ -2,27 +2,22 @@
 
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
-
-
 <!-- PROJECT LOGO -->
-<br />
 <div align="center">
 
 <h3 align="center">Delivery App</h3>
 
   <p align="center">
-  Delivery app repository.
+ This is a delivery app made by React Native, Redux, Typescript, NodeJs, ExpressJs and MongoDB.
     <br />
     <br />
     <a href="https://delivery-app-by-hernan.uptodown.com/android">Download demo</a>
-    ·
-    <a href="https://api.whatsapp.com/send?phone=51999113934&text=Hola%20Hernan!%20%F0%9F%98%83">Whastapp</a>
     ·
     <a href="mailto:contacto.acero.hernan@gmail.com">Email</a>
   </p>
 </div>
 
-
+![Screenshoots](docs/screenshoots-2.png)
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -34,6 +29,7 @@
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
+    <li><a href="#screenshoots">Screenshoots</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
   </ol>
@@ -59,6 +55,21 @@ Delivery App is a delivery food ordering app for Andorid and IOS, built in React
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+
+
+<!-- SCREENSHOOTS -->
+## Screenshoots
+![Screenshoots part 1](docs/screenshoots-1.png)
+
+![Screenshoots part 2](docs/screenshoots-2.png)
+
+![Screenshoots part 3](docs/screenshoots-3.png)
+
+![Screenshoots part 4](docs/screenshoots-4.png)
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
 <!-- LICENSE -->
 ## License
 
@@ -67,13 +78,10 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
-
 <!-- CONTACT -->
 ## Contact
 
-Hernan Acero - [Whastapp](https://api.whatsapp.com/send?phone=51999113934&text=Hola%20Hernan!%20%F0%9F%98%83) - contacto.acero.hernan@gmail.com
-
-Project Link: [https://acerohernan.github.io/portfolio_react_ts/](https://acerohernan.github.io/portfolio_react_ts/)
+Email: contact.acero.hernan@gmail.com
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -81,4 +89,5 @@ Project Link: [https://acerohernan.github.io/portfolio_react_ts/](https://aceroh
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/hernan-acero/
-[product-screenshot]: images/screenshot.png
+
+
